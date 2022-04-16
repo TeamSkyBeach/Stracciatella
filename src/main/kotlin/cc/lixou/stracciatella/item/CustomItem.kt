@@ -1,11 +1,12 @@
 package cc.lixou.stracciatella.item
 
 import cc.lixou.stracciatella.utils.extensions.setCreamID
+import net.minestom.server.entity.Player
 import net.minestom.server.item.ItemMeta
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
 
-open class CustomItem(
+abstract class CustomItem(
     private val id: String,
     private val material: Material,
     private val createMeta: (ItemMeta.Builder) -> Unit = { }
@@ -21,5 +22,7 @@ open class CustomItem(
         }
         return builder.build()
     }
+
+    abstract fun onInteract(player: Player, action: InteractReason)
 
 }
