@@ -4,6 +4,7 @@ import cc.lixou.stracciatella.utils.extensions.setCreamID
 import net.minestom.server.entity.Player
 import net.minestom.server.event.EventFilter
 import net.minestom.server.event.EventNode
+import net.minestom.server.event.player.PlayerSwapItemEvent
 import net.minestom.server.item.ItemMeta
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
@@ -33,6 +34,12 @@ sealed class CustomItem(
         return builder.build()
     }
 
-    abstract fun onInteract(player: Player, action: InteractReason)
+    /**
+     * Get called when interacting with the item
+     * @param player    the player which interacts
+     * @param action    the action reason
+     * @return boolean if the event should get cancelled
+     */
+    abstract fun onInteract(player: Player, action: InteractReason): Boolean
 
 }
