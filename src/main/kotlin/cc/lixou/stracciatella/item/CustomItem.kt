@@ -7,7 +7,7 @@ import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
 import net.minestom.server.tag.Tag
 
-abstract class CustomItem(
+sealed class CustomItem(
     private val id: String,
     private val material: Material,
     private val createMeta: (ItemMeta.Builder) -> Unit = { }
@@ -15,10 +15,8 @@ abstract class CustomItem(
 
     companion object {
         val creamTag = Tag.String("creamID")
-    }
-
-    init {
-
+        val registryMap: Map<String, CustomItem>
+            get() = CustomItem::class.sealedSubclasses.mapNotNull { it.objectInstance }.associateBy { it.id }
     }
 
     fun createItemStack(): ItemStack {
