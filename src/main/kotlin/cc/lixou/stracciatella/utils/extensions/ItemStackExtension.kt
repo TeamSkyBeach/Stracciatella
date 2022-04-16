@@ -1,5 +1,6 @@
 package cc.lixou.stracciatella.utils.extensions
 
+import cc.lixou.stracciatella.item.CustomItem.Companion.creamTag
 import net.minestom.server.item.ItemStack
 
 fun ItemStack.hasCreamID(): Boolean {
