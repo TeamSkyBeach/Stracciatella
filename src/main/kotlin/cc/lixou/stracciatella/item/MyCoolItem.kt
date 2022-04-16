@@ -8,8 +8,8 @@ import net.minestom.server.item.Material
 object MyCoolItem : CustomItem(
     "myCoolItem",
     Material.FEATHER,
-    Component.text("MyCoolFeather", NamedTextColor.DARK_GRAY),
     {
+        it.displayName(Component.text("MyCoolFeather", NamedTextColor.DARK_GRAY))
         it.enchantment(Enchantment.BANE_OF_ARTHROPODS, 2)
     }
 ) {
