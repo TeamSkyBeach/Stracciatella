@@ -2,10 +2,10 @@ package cc.lixou.stracciatella.utils.extensions
 
 import net.minestom.server.item.ItemStack
 
-fun ItemStack.hasBeachID(): Boolean {
-    return this.hasTag(beachTag)
+fun ItemStack.hasCreamID(): Boolean {
+    return this.hasTag(creamTag)
 }
 
-fun ItemStack.getBeachID(): String? {
-    return this.getTag(beachTag)
+fun ItemStack.getCreamID(): String? {
+    return this.getTag(creamTag)
 }
