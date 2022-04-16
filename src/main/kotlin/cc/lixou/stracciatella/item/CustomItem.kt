@@ -2,6 +2,8 @@ package cc.lixou.stracciatella.item
 
 import cc.lixou.stracciatella.utils.extensions.setCreamID
 import net.minestom.server.entity.Player
+import net.minestom.server.event.EventFilter
+import net.minestom.server.event.EventNode
 import net.minestom.server.item.ItemMeta
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
@@ -17,6 +19,7 @@ sealed class CustomItem(
         val creamTag = Tag.String("creamID")
         val registryMap: Map<String, CustomItem>
             get() = CustomItem::class.sealedSubclasses.mapNotNull { it.objectInstance }.associateBy { it.id }
+        private val eventNode = EventNode.type("customitem-listener", EventFilter.PLAYER)
     }
 
     fun createItemStack(): ItemStack {
