@@ -1,12 +1,11 @@
 package cc.lixou.stracciatella.utils.extensions
 
 import net.minestom.server.item.ItemStack
-import net.minestom.server.tag.Tag
 
-fun ItemStack.Builder.setBeachID(beachID: String): ItemStack.Builder {
-    this.meta { meta ->
-        meta.set(Tag.String("beachID"), beachID)
-        return@meta meta
-    }
-    return this
+fun ItemStack.hasBeachID(): Boolean {
+    return this.hasTag(beachTag)
+}
+
+fun ItemStack.getBeachID(): String? {
+    return this.getTag(beachTag)
 }
