@@ -1,6 +1,6 @@
 package cc.lixou.stracciatella.item
 
-import cc.lixou.stracciatella.utils.extensions.setBeachID
+import cc.lixou.stracciatella.utils.extensions.setCreamID
 import net.minestom.server.item.ItemMeta
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
@@ -16,7 +16,7 @@ open class CustomItem(
             .builder(material)
         builder.meta { meta ->
             createMeta.invoke(meta)
-            meta.setBeachID(id)
+            meta.setCreamID(id)
             return@meta meta
         }
         return builder.build()

@@ -6,10 +6,6 @@ import net.minestom.server.coordinate.Pos
 import net.minestom.server.event.player.PlayerBlockInteractEvent
 import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.instance.block.Block
-import net.minestom.server.item.ItemStack
-import net.minestom.server.item.Material
-
-import cc.lixou.stracciatella.utils.extensions.setBeachID
 
 class Stracciatella {
 
