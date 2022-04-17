@@ -3,7 +3,6 @@ package cc.lixou.stracciatella
 import cc.lixou.stracciatella.item.MyCoolItem
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
-import net.minestom.server.event.player.PlayerBlockInteractEvent
 import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.instance.block.Block
 
