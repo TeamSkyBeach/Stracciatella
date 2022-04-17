@@ -19,7 +19,7 @@ import net.minestom.server.tag.Tag
 sealed class CustomItem(
     private val id: String,
     private val material: Material,
-    private val createMeta: (ItemMeta.Builder) -> Unit = { }
+    private val createMeta: (CustomItemBuilder) -> Unit = { }
 ) {
 
     companion object {
@@ -60,8 +60,8 @@ sealed class CustomItem(
     fun createItemStack(): ItemStack {
         val builder = ItemStack
             .builder(material)
+        createMeta.invoke(CustomItemBuilder(builder))
         builder.meta { meta ->
-            createMeta.invoke(meta)
             meta.setCreamID(id)
             return@meta meta
         }
