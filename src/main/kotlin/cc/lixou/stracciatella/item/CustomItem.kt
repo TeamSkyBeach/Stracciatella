@@ -31,10 +31,12 @@ sealed class CustomItem(
         init {
             MinecraftServer.getGlobalEventHandler().addChild(eventNode)
             eventNode.addListener(PlayerSwapItemEvent::class.java) { event ->
-                event.isCancelled = tryInteract(event, InteractReason.PlayerSwapItem, event.mainHandItem, event.offHandItem)
+                event.isCancelled =
+                    tryInteract(event, InteractReason.PlayerSwapItem, event.mainHandItem, event.offHandItem)
             }
             eventNode.addListener(InventoryPreClickEvent::class.java) { event ->
-                event.isCancelled = tryInteract(event, InteractReason.InventoryPreClickEvent, event.clickedItem, event.cursorItem)
+                event.isCancelled =
+                    tryInteract(event, InteractReason.InventoryPreClickEvent, event.clickedItem, event.cursorItem)
             }
             eventNode.addListener(PlayerUseItemEvent::class.java) { event ->
                 event.isCancelled = tryInteract(event, InteractReason.PlayerUseItemEvent, event.itemStack)
@@ -45,10 +47,10 @@ sealed class CustomItem(
         }
 
         private fun tryInteract(event: PlayerEvent, reason: InteractReason, vararg tests: ItemStack): Boolean {
-            if(tests.isEmpty()) return false
+            if (tests.isEmpty()) return false
             val player = event.player
             var cancelled = false
-            for(test in tests) {
+            for (test in tests) {
                 cancelled = cancelled || (test.getCustomItem()?.onInteract(player, reason) ?: false)
             }
             return cancelled
