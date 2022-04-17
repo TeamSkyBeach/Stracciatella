@@ -27,10 +27,6 @@ class Stracciatella {
             player.respawnPoint = Pos(0.0, 42.0, 0.0)
             player.inventory.setItemStack(4, MyCoolItem.createItemStack())
         }
-        eventHandler.addListener(PlayerBlockInteractEvent::class.java) { event ->
-            println(event.player.inventory.getItemInHand(event.hand).toItemNBT().toSNBT())
-            event.isCancelled = true
-        }
 
         MinecraftServer.setBrandName("Stracciatella (Minestom powered)")
 
