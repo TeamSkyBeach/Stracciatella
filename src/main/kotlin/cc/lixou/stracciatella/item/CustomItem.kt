@@ -11,7 +11,6 @@ import net.minestom.server.event.player.PlayerSwapItemEvent
 import net.minestom.server.event.player.PlayerUseItemEvent
 import net.minestom.server.event.player.PlayerUseItemOnBlockEvent
 import net.minestom.server.event.trait.PlayerEvent
-import net.minestom.server.item.ItemMeta
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
 import net.minestom.server.tag.Tag
@@ -19,7 +18,7 @@ import net.minestom.server.tag.Tag
 sealed class CustomItem(
     private val id: String,
     private val material: Material,
-    private val createMeta: (ItemMeta.Builder) -> Unit = { }
+    private val createMeta: (CustomItemBuilder) -> Unit = { }
 ) {
 
     companion object {
@@ -60,8 +59,8 @@ sealed class CustomItem(
     fun createItemStack(): ItemStack {
         val builder = ItemStack
             .builder(material)
+        createMeta.invoke(CustomItemBuilder(builder))
         builder.meta { meta ->
-            createMeta.invoke(meta)
             meta.setCreamID(id)
             return@meta meta
         }
