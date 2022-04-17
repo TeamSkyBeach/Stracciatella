@@ -14,7 +14,8 @@ object MyCoolItem : CustomItem(
         it.enchantment(Enchantment.BANE_OF_ARTHROPODS, 2)
     }
 ) {
-    override fun onInteract(player: Player, action: InteractReason) {
-
+    override fun onInteract(player: Player, action: InteractReason): Boolean {
+        println("Interact $action")
+        return true
     }
 }
