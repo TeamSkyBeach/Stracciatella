@@ -66,6 +66,10 @@ sealed class CustomItem(
         return builder.build()
     }
 
+    fun getCreamID(): String {
+        return id
+    }
+
     /**
      * Get called when interacting with the item
      * @param player    the player which interacts
