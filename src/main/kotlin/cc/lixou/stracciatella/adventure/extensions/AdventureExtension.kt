@@ -1,4 +1,4 @@
-package cc.lixou.stracciatella.utils.extensions
+package cc.lixou.stracciatella.adventure.extensions
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextDecoration
