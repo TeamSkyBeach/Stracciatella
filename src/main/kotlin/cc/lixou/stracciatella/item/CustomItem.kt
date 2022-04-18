@@ -59,7 +59,6 @@ open class CustomItem(
     init {
         this.also { registryMap[id] = it }
         createMeta.invoke(customBuilder)
-        println(registryMap)
     }
 
     fun createItemStack(): ItemStack {
