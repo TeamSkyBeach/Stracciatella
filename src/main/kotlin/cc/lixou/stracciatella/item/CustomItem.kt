@@ -1,7 +1,7 @@
 package cc.lixou.stracciatella.item
 
-import cc.lixou.stracciatella.utils.extensions.getCustomItem
-import cc.lixou.stracciatella.utils.extensions.setCreamID
+import cc.lixou.stracciatella.item.extensions.getCustomItem
+import cc.lixou.stracciatella.item.extensions.setCreamID
 import net.minestom.server.MinecraftServer
 import net.minestom.server.entity.Player
 import net.minestom.server.event.EventFilter
@@ -11,21 +11,18 @@ import net.minestom.server.event.player.PlayerSwapItemEvent
 import net.minestom.server.event.player.PlayerUseItemEvent
 import net.minestom.server.event.player.PlayerUseItemOnBlockEvent
 import net.minestom.server.event.trait.PlayerEvent
-import net.minestom.server.item.ItemMeta
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
 import net.minestom.server.tag.Tag
 
-sealed class CustomItem(
+open class CustomItem(
     private val id: String,
     private val material: Material,
-    private val createMeta: (CustomItemBuilder) -> Unit = { }
+    createMeta: (CustomItemBuilder) -> Unit = { }
 ) {
-
     companion object {
         val creamTag = Tag.String("creamID")
-        val registryMap: Map<String, CustomItem>
-            get() = CustomItem::class.sealedSubclasses.mapNotNull { it.objectInstance }.associateBy { it.id }
+        val registryMap: HashMap<String, CustomItem> = HashMap()
         private val eventNode = EventNode.type("customitem-listener", EventFilter.PLAYER)
 
         init {
@@ -57,10 +54,18 @@ sealed class CustomItem(
         }
     }
 
+    private var customBuilder: CustomItemBuilder = CustomItemBuilder()
+
+    init {
+        this.also { registryMap[id] = it }
+        createMeta.invoke(customBuilder)
+        println(registryMap)
+    }
+
     fun createItemStack(): ItemStack {
         val builder = ItemStack
             .builder(material)
-        createMeta.invoke(CustomItemBuilder(builder))
+        customBuilder.internalApply(builder)
         builder.meta { meta ->
             meta.setCreamID(id)
             return@meta meta
@@ -78,6 +83,9 @@ sealed class CustomItem(
      * @param action    the action reason
      * @return boolean if the event should get cancelled
      */
-    abstract fun onInteract(player: Player, action: InteractReason): Boolean
+    fun onInteract(player: Player, action: InteractReason): Boolean {
+        println(customBuilder.internalInteract())
+        return customBuilder.internalInteract()?.invoke(player, action) ?: false
+    }
 
 }
