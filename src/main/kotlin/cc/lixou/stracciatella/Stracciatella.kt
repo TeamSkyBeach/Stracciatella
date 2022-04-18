@@ -1,5 +1,6 @@
 package cc.lixou.stracciatella
 
+import cc.lixou.stracciatella.instance.extensions.createIcedInstance
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.event.player.PlayerLoginEvent
@@ -12,7 +13,7 @@ class Stracciatella {
 
         val instanceManager = MinecraftServer.getInstanceManager()
 
-        val instanceContainer = instanceManager.createInstanceContainer()
+        val instanceContainer = instanceManager.createIcedInstance()
 
         instanceContainer.setGenerator { unit ->
             unit.modifier().fillHeight(0, 40, Block.GRASS_BLOCK)
