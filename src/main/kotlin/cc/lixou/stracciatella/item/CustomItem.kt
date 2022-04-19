@@ -4,6 +4,7 @@ import cc.lixou.stracciatella.item.extensions.getCustomItem
 import cc.lixou.stracciatella.item.extensions.setCreamID
 import net.minestom.server.MinecraftServer
 import net.minestom.server.entity.Player
+import net.minestom.server.event.Event
 import net.minestom.server.event.EventFilter
 import net.minestom.server.event.EventNode
 import net.minestom.server.event.inventory.InventoryPreClickEvent
@@ -44,21 +45,21 @@ open class CustomItem(
         }
 
         private fun tryInteract(event: PlayerEvent, reason: InteractReason, vararg tests: ItemStack): Boolean {
-            if (tests.isEmpty()) return false
-            val player = event.player
-            var cancelled = false
-            for (test in tests) {
-                cancelled = cancelled || (test.getCustomItem()?.onInteract(player, reason) ?: false)
-            }
-            return cancelled
+            return false
         }
     }
 
-    private var customBuilder: CustomItemBuilder = CustomItemBuilder()
+    private val eventNode = EventNode.event("item-${id}", EventFilter.ITEM) {
+        // TODO: Item Events FOR PlayerUseItemOnBlockEvent, PlayerUseItemEvent, InventoryPreClickEvent, PlayerSwapItemEvent
+        return@event true
+    }
+    @Suppress("UNCHECKED_CAST")
+    private val customBuilder: CustomItemBuilder = CustomItemBuilder(eventNode as EventNode<Event>)
 
     init {
         this.also { registryMap[id] = it }
         createMeta.invoke(customBuilder)
+        MinecraftServer.getGlobalEventHandler().addChild(eventNode)
     }
 
     fun createItemStack(): ItemStack {
@@ -74,17 +75,6 @@ open class CustomItem(
 
     fun getCreamID(): String {
         return id
-    }
-
-    /**
-     * Get called when interacting with the item
-     * @param player    the player which interacts
-     * @param action    the action reason
-     * @return boolean if the event should get cancelled
-     */
-    fun onInteract(player: Player, action: InteractReason): Boolean {
-        println(customBuilder.internalInteract())
-        return customBuilder.internalInteract()?.invoke(player, action) ?: false
     }
 
 }
