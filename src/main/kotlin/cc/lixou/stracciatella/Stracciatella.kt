@@ -1,5 +1,6 @@
 package cc.lixou.stracciatella
 
+import cc.lixou.stracciatella.npc.NPC
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.event.player.PlayerLoginEvent
@@ -16,6 +17,10 @@ class Stracciatella {
 
         instanceContainer.setGenerator { unit ->
             unit.modifier().fillHeight(0, 40, Block.GRASS_BLOCK)
+        }
+
+        NPC.createPlayer("Kevin") {
+            it.teleport(Pos(2.0, 42.0, 5.0))
         }
 
         val eventHandler = MinecraftServer.getGlobalEventHandler()
