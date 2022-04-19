@@ -31,15 +31,8 @@ class CustomItemBuilder(
      * @param eventClass The Event Class
      * @param listener the code which gets executed on the event
      */
-    fun <T : Event> event(eventClass: Class<T>, listener: (T) -> Unit, vararg checkingItems: (T) -> ItemStack) {
-        eventNode.addListener(eventClass) {
-            var hasRequiredItem = false
-            checkingItems.forEach { item ->
-                hasRequiredItem = hasRequiredItem || item.invoke(it).getCreamID().equals(customItem.getCreamID())
-            }
-            if (!hasRequiredItem) return@addListener
-            listener.invoke(it)
-        }
+    fun <T : Event> event(eventClass: Class<T>, listener: (T) -> Unit) {
+        eventNode.addListener(eventClass, listener)
     }
 
     /**

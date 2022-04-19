@@ -1,5 +1,6 @@
 package cc.lixou.stracciatella.item
 
+import cc.lixou.stracciatella.item.extensions.getCreamID
 import cc.lixou.stracciatella.item.extensions.setCreamID
 import net.minestom.server.MinecraftServer
 import net.minestom.server.event.EventFilter
@@ -73,6 +74,14 @@ open class CustomItem(
 
     fun getCreamID(): String {
         return id
+    }
+
+    /**
+     * Checks if the item has same CreamID as this custom item
+     * @return if true: same CreamID
+     */
+    fun validate(other: ItemStack): Boolean {
+        return other.getCreamID().equals(id)
     }
 
 }
