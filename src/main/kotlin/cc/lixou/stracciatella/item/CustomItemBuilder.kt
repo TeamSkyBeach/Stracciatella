@@ -1,11 +1,13 @@
 package cc.lixou.stracciatella.item
 
 import net.minestom.server.entity.Player
+import net.minestom.server.event.Event
+import net.minestom.server.event.EventNode
 import net.minestom.server.item.ItemMeta
 import net.minestom.server.item.ItemMetaView
 import net.minestom.server.item.ItemStack
 
-class CustomItemBuilder {
+class CustomItemBuilder(private val eventNode: EventNode<Event>) {
     private var passedInteractionMethod: ((Player, InteractReason) -> Boolean)? = null
     private var passedMetaClass: Class<ItemMeta.Builder>? = null
     private var passedMetaWriting: ((ItemMeta.Builder) -> Unit)? = null
@@ -21,12 +23,12 @@ class CustomItemBuilder {
     }
 
     /**
-     * Gets called when interacting with the item
-     * @param onInteract interaction function with
-     * the player which interacts and the action reason
+     * Registers an event to the items eventNode
+     * @param eventClass The Event Class
+     * @param listener the code which gets executed on the event
      */
-    fun interaction(onInteract: (player: Player, action: InteractReason) -> Boolean) {
-        this.passedInteractionMethod = onInteract
+    fun <T : Event> event(eventClass: Class<T>, listener: (T) -> Unit) {
+        eventNode.addListener(eventClass, listener)
     }
 
     /**
@@ -51,9 +53,4 @@ class CustomItemBuilder {
 
         return builder
     }
-
-    /**
-     * INTERNAL METHOD
-     */
-    fun internalInteract(): ((Player, InteractReason) -> Boolean)? = passedInteractionMethod
 }
