@@ -52,10 +52,13 @@ open class CustomItem(
 
     private val eventNode = EventNode.all("item-${id}")
     @Suppress("UNCHECKED_CAST")
-    private val customBuilder: CustomItemBuilder = CustomItemBuilder(eventNode)
+    private val customBuilder: CustomItemBuilder
 
     init {
-        this.also { registryMap[id] = it }
+        this.also {
+            registryMap[id] = it
+            customBuilder = CustomItemBuilder(it, eventNode)
+        }
         createMeta.invoke(customBuilder)
         MinecraftServer.getGlobalEventHandler().addChild(eventNode)
     }
