@@ -3,11 +3,12 @@ package cc.lixou.stracciatella.item
 import net.minestom.server.entity.Player
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
+import net.minestom.server.event.trait.ItemEvent
 import net.minestom.server.item.ItemMeta
 import net.minestom.server.item.ItemMetaView
 import net.minestom.server.item.ItemStack
 
-class CustomItemBuilder(private val eventNode: EventNode<Event>) {
+class CustomItemBuilder(private val eventNode: EventNode<ItemEvent>) {
     private var passedInteractionMethod: ((Player, InteractReason) -> Boolean)? = null
     private var passedMetaClass: Class<ItemMeta.Builder>? = null
     private var passedMetaWriting: ((ItemMeta.Builder) -> Unit)? = null
@@ -27,7 +28,7 @@ class CustomItemBuilder(private val eventNode: EventNode<Event>) {
      * @param eventClass The Event Class
      * @param listener the code which gets executed on the event
      */
-    fun <T : Event> event(eventClass: Class<T>, listener: (T) -> Unit) {
+    fun <T : ItemEvent> event(eventClass: Class<T>, listener: (T) -> Unit) {
         eventNode.addListener(eventClass, listener)
     }
 

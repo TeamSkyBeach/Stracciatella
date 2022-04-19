@@ -55,7 +55,7 @@ open class CustomItem(
         return@event it.itemStack.getCreamID().equals(id)
     }
     @Suppress("UNCHECKED_CAST")
-    private val customBuilder: CustomItemBuilder = CustomItemBuilder(eventNode as EventNode<Event>)
+    private val customBuilder: CustomItemBuilder = CustomItemBuilder(eventNode)
 
     init {
         this.also { registryMap[id] = it }
