@@ -1,5 +1,6 @@
 package cc.lixou.stracciatella.item
 
+import cc.lixou.stracciatella.item.extensions.getCreamID
 import cc.lixou.stracciatella.item.extensions.getCustomItem
 import cc.lixou.stracciatella.item.extensions.setCreamID
 import net.minestom.server.MinecraftServer
@@ -50,8 +51,8 @@ open class CustomItem(
     }
 
     private val eventNode = EventNode.event("item-${id}", EventFilter.ITEM) {
-        // TODO: Item Events FOR PlayerUseItemOnBlockEvent, PlayerUseItemEvent, InventoryPreClickEvent, PlayerSwapItemEvent
-        return@event true
+        // TODO: Item Events FOR InventoryPreClickEvent, PlayerSwapItemEvent
+        return@event it.itemStack.getCreamID().equals(id)
     }
     @Suppress("UNCHECKED_CAST")
     private val customBuilder: CustomItemBuilder = CustomItemBuilder(eventNode as EventNode<Event>)
