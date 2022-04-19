@@ -50,10 +50,7 @@ open class CustomItem(
         }
     }
 
-    private val eventNode = EventNode.event("item-${id}", EventFilter.ITEM) {
-        // TODO: Item Events FOR InventoryPreClickEvent, PlayerSwapItemEvent
-        return@event it.itemStack.getCreamID().equals(id)
-    }
+    private val eventNode = EventNode.all("item-${id}")
     @Suppress("UNCHECKED_CAST")
     private val customBuilder: CustomItemBuilder = CustomItemBuilder(eventNode)
 
