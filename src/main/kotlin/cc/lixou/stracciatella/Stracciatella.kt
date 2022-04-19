@@ -13,7 +13,7 @@ class Stracciatella {
 
         val instanceManager = MinecraftServer.getInstanceManager()
 
-        val instanceContainer = instanceManager.createIcedInstance()
+        val instanceContainer = instanceManager.createIcedInstance("testworld.iced")
 
         instanceContainer.setGenerator { unit ->
             unit.modifier().fillHeight(0, 40, Block.GRASS_BLOCK)

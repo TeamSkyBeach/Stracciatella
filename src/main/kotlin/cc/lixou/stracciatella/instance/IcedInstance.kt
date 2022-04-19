@@ -7,11 +7,11 @@ import java.util.*
 /**
  * Instance Container for our ICED Instance Format
  */
-class IcedInstance(uuid: UUID, dimensionType: DimensionType = DimensionType.OVERWORLD) :
-    InstanceContainer(uuid, dimensionType, IcedChunkLoader()) {
+class IcedInstance(uuid: UUID, dimensionType: DimensionType = DimensionType.OVERWORLD, worldFilePath: String) :
+    InstanceContainer(uuid, dimensionType, IcedChunkLoader(worldFilePath)) {
 
     init {
-        
+
     }
 
 

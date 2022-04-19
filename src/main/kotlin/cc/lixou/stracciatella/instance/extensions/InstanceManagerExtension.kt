@@ -5,8 +5,8 @@ import net.minestom.server.instance.InstanceManager
 import net.minestom.server.world.DimensionType
 import java.util.*
 
-fun InstanceManager.createIcedInstance(dimensionType: DimensionType = DimensionType.OVERWORLD): IcedInstance {
-    val icedInstance = IcedInstance(UUID.randomUUID(), dimensionType)
+fun InstanceManager.createIcedInstance(worldFilePath: String, dimensionType: DimensionType = DimensionType.OVERWORLD): IcedInstance {
+    val icedInstance = IcedInstance(UUID.randomUUID(), dimensionType, worldFilePath)
     registerInstance(icedInstance)
     return icedInstance
 }
