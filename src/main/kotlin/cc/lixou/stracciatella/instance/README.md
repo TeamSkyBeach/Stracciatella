@@ -5,4 +5,10 @@ Iced is an File Format for storing chunk and other world data in a small file.
 
 ## Structure
 
-*Insert file structure*
+```kotlin
+/** World Data */
+minX: Short // The lowest chunkX coordiante
+minZ: Short // The lowest chunkZ coordiante
+sizeX: UShort // The amout of chunks in the x axis
+sizeZ: UShort // The amout of chunks in the z axis
+```

@@ -29,6 +29,11 @@ class Stracciatella {
         MinecraftServer.setBrandName("Stracciatella (Minestom powered)")
 
         server.start("0.0.0.0", 25565)
+
+        MinecraftServer.getSchedulerManager().buildShutdownTask {
+            instanceContainer.saveInstance()
+            println("Saved")
+        }
     }
 
 }
