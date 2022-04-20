@@ -4,6 +4,8 @@ import cc.lixou.stracciatella.item.extensions.getCreamID
 import net.minestom.server.entity.Player
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
+import net.minestom.server.event.item.ItemDropEvent
+import net.minestom.server.event.trait.ItemEvent
 import net.minestom.server.item.ItemMeta
 import net.minestom.server.item.ItemMetaView
 import net.minestom.server.item.ItemStack
@@ -33,6 +35,16 @@ class CustomItemBuilder(
      */
     fun <T : Event> event(eventClass: Class<T>, listener: (T) -> Unit) {
         eventNode.addListener(eventClass, listener)
+    }
+
+    /**
+     * Registers multiple events from same type to the items eventNode
+     * @param baseClass the eventClass every subClass extends
+     * @param listener the code which gets executed on the event
+     * @param subClasses the subclasses of the baseClasses which get called
+     */
+    fun <T : Event> event(baseClass: Class<T>, listener: (T) -> Unit, vararg subClasses: Class<out T>) {
+        subClasses.forEach { eventNode.addListener(it, listener) }
     }
 
     /**
