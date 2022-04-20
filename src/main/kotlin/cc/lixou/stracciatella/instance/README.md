@@ -6,7 +6,7 @@ Iced is an File Format for storing chunk and other world data in a small file.
 ## Structure
 
 ```kotlin
-/** World Data */
+/* World Data */
 minX: Short // The lowest chunkX coordiante
 minZ: Short // The lowest chunkZ coordiante
 sizeX: UShort // The amout of chunks in the x axis
@@ -14,14 +14,13 @@ sizeZ: UShort // The amout of chunks in the z axis
 ```
 
 ```kotlin
-/** Chunk Data (summary) */
+/* Chunk Data (summary) */
 uniqueChunks: BitSet(sizeX * sizeZ) // 0: Chunk is empty
                                     // 1: Chunk is unique
 ```
 
 ```kotlin
-/** Chunk Data (single) */
-/** -> Blocks */
+/* Chunk Data (single) */
 if(isUnique) {
     sections: Array<ChunkSection> // Chunks Sections
     {
