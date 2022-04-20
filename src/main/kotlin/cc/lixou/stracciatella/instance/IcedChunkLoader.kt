@@ -22,14 +22,18 @@ class IcedChunkLoader(
     }
 
     private var path: Path = Path.of(worldFileName)
+    private var minX: Short = 0
+    private var minZ: Short = 0
+    private var sizeX: UShort = 0u
+    private var sizeZ: UShort = 0u
 
     override fun loadInstance(instance: Instance) {
         if(!Files.exists(path)) { return }
         DataInputStream(FileInputStream(path.toFile())).use { dis ->
-            println("MinX: ${dis.readShort()}") // works - -4
-            println("MinZ: ${dis.readShort()}") // works - -5
-            println("SizeX: ${dis.readUnsignedShort()}") // works - 5
-            println("SizeZ: ${dis.readUnsignedShort()}") // works - 13
+            minX = dis.readShort()
+            minZ = dis.readShort()
+            sizeX = dis.readUnsignedShort().toUShort()
+            sizeZ = dis.readUnsignedShort().toUShort()
         }
     }
 
@@ -44,10 +48,10 @@ class IcedChunkLoader(
 
     override fun saveInstance(instance: Instance): CompletableFuture<Void> {
         DataOutputStream(FileOutputStream(path.toFile())).use { dos ->
-            dos.writeShort(-4)
-            dos.writeShort(-5)
-            dos.writeShort(5)
-            dos.writeShort(13)
+            dos.writeShort(minX.toInt())
+            dos.writeShort(minZ.toInt())
+            dos.writeShort(sizeX.toInt())
+            dos.writeShort(sizeZ.toInt())
         }
         return CompletableFuture.completedFuture(null)
     }
