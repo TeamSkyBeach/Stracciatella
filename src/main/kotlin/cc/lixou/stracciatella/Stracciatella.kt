@@ -31,6 +31,7 @@ class Stracciatella {
         server.start("0.0.0.0", 25565)
 
         MinecraftServer.getSchedulerManager().buildShutdownTask {
+            instanceContainer.saveChunksToStorage()
             instanceContainer.saveInstance()
             println("Saved")
         }

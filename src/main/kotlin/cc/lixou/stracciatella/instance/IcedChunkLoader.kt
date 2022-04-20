@@ -63,6 +63,16 @@ class IcedChunkLoader(
      */
     override fun saveChunk(chunk: Chunk): CompletableFuture<Void> {
         LOGGER.info("Saving chunk ${chunk.chunkX} - ${chunk.chunkZ}")
+        if (chunk.chunkX < minX) {
+            minX = chunk.chunkX.toShort()
+        } else if (chunk.chunkX > (sizeX + minX.toUInt()).toInt()) {
+            sizeX = (chunk.chunkX - minX.toInt()).toUShort()
+        }
+        if (chunk.chunkZ < minZ) {
+            minZ = chunk.chunkZ.toShort()
+        } else if (chunk.chunkZ > (sizeZ + minZ.toUInt()).toInt()) {
+            sizeZ = (chunk.chunkZ - minZ.toInt()).toUShort()
+        }
         return CompletableFuture.completedFuture(null)
     }
 
