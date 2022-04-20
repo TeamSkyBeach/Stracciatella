@@ -28,7 +28,9 @@ class IcedChunkLoader(
     private var sizeZ: UShort = 0u
 
     override fun loadInstance(instance: Instance) {
-        if(!Files.exists(path)) { return }
+        if (!Files.exists(path)) {
+            return
+        }
         DataInputStream(FileInputStream(path.toFile())).use { dis ->
             minX = dis.readShort()
             minZ = dis.readShort()
@@ -56,6 +58,9 @@ class IcedChunkLoader(
         return CompletableFuture.completedFuture(null)
     }
 
+    /**
+     * Prepares the Chunk for saving in an [IcedChunkData]
+     */
     override fun saveChunk(chunk: Chunk): CompletableFuture<Void> {
         LOGGER.info("Saving chunk ${chunk.chunkX} - ${chunk.chunkZ}")
         return CompletableFuture.completedFuture(null)
