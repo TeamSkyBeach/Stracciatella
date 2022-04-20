@@ -24,6 +24,7 @@ class IcedChunkLoader(
     private var path: Path = Path.of(worldFileName)
 
     override fun loadInstance(instance: Instance) {
+        if(!Files.exists(path)) { return }
         DataInputStream(FileInputStream(path.toFile())).use { dis ->
             println("MinX: ${dis.readShort()}") // works - -4
             println("MinZ: ${dis.readShort()}") // works - -5
@@ -33,7 +34,7 @@ class IcedChunkLoader(
     }
 
     override fun loadChunk(instance: Instance, chunkX: Int, chunkZ: Int): CompletableFuture<Chunk?> {
-        LOGGER.debug("Loading chunk $chunkX - $chunkZ")
+        LOGGER.info("Loading chunk $chunkX - $chunkZ")
         if (!Files.exists(path)) {
             // Whole .iced file not found - new world
             return CompletableFuture.completedFuture(null)
@@ -52,6 +53,7 @@ class IcedChunkLoader(
     }
 
     override fun saveChunk(chunk: Chunk): CompletableFuture<Void> {
+        LOGGER.info("Saving chunk ${chunk.chunkX} - ${chunk.chunkZ}")
         return CompletableFuture.completedFuture(null)
     }
 
