@@ -15,10 +15,18 @@ sizeZ: UShort // The amout of chunks in the z axis
 
 ```kotlin
 /** Chunk Data (summary) */
-uniqueChunks: BitSet(sizeX * sizeZ) // 0: Chunk is empty or similar to neighbour
+uniqueChunks: BitSet(sizeX * sizeZ) // 0: Chunk is empty
                                     // 1: Chunk is unique
 ```
 
 ```kotlin
 /** Chunk Data (single) */
+/** -> Blocks */
+if(isUnique) {
+    sections: Array<ChunkSection> // Chunks Sections
+    {
+        y: Byte // yIndex of the sections.
+                // later gets multiplied by CHUNK_SECTION_SIZE
+    }
+}
 ```
