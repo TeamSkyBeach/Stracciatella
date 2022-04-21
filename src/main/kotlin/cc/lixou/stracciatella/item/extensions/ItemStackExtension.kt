@@ -1,4 +1,4 @@
-package cc.lixou.stracciatella.utils.extensions
+package cc.lixou.stracciatella.item.extensions
 
 import cc.lixou.stracciatella.item.CustomItem
 import cc.lixou.stracciatella.item.CustomItem.Companion.creamTag
