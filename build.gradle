@@ -1,5 +1,6 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.20'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.20'
     id 'application'
 }
 
@@ -14,7 +15,7 @@ repositories {
 dependencies {
     implementation 'com.github.Minestom:Minestom:f0fa81b712'
 
-    implementation 'org.yaml:snakeyaml:1.30'
+    implementation "com.charleskorn.kaml:kaml:0.43.0" // Get the latest version number from https://github.com/charleskorn/kaml/releases/latest
 
     implementation "net.kyori:adventure-text-minimessage:4.10.1"
 
