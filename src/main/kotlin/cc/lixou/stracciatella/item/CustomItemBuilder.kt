@@ -1,11 +1,7 @@
 package cc.lixou.stracciatella.item
 
-import cc.lixou.stracciatella.item.extensions.getCreamID
-import net.minestom.server.entity.Player
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
-import net.minestom.server.event.item.ItemDropEvent
-import net.minestom.server.event.trait.ItemEvent
 import net.minestom.server.item.ItemMeta
 import net.minestom.server.item.ItemMetaView
 import net.minestom.server.item.ItemStack
@@ -14,7 +10,6 @@ class CustomItemBuilder(
     private val customItem: CustomItem,
     private val eventNode: EventNode<Event>
 ) {
-    private var passedInteractionMethod: ((Player, InteractReason) -> Boolean)? = null
     private var passedMetaClass: Class<ItemMeta.Builder>? = null
     private var passedMetaWriting: ((ItemMeta.Builder) -> Unit)? = null
 
