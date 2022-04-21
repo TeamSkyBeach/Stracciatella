@@ -1,7 +1,7 @@
 import cc.lixou.stracciatella.Stracciatella
 import cc.lixou.stracciatella.config.Config
-import cc.lixou.stracciatella.utils.serializer.PositionSerializer
 import net.minestom.server.coordinate.Pos
+import world.cepi.kstom.serializer.PositionSerializer
 import java.nio.file.Path
 
 fun main(args: Array<String>) {
