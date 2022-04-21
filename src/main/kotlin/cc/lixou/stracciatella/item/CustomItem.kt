@@ -39,6 +39,10 @@ open class CustomItem(
     }
 
     fun createItemStack(): ItemStack {
+        return prepareBuilder().build()
+    }
+
+    fun prepareBuilder(): ItemStack.Builder {
         val builder = ItemStack
             .builder(material)
         customBuilder.internalApply(builder)
@@ -46,7 +50,7 @@ open class CustomItem(
             meta.setCreamID(id)
             return@meta meta
         }
-        return builder.build()
+        return builder
     }
 
     fun getCreamID(): String {
