@@ -3,6 +3,7 @@ package cc.lixou.stracciatella.config
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
 import java.io.File
+import java.io.FileReader
 import java.io.FileWriter
 
 class YamlConfiguration : Configuration() {
@@ -18,7 +19,9 @@ class YamlConfiguration : Configuration() {
     }
 
     override fun load(file: File) {
-        TODO("Not yet implemented")
+        val reader = FileReader(file)
+        data.setValues(yaml.load(reader))
+        reader.close()
     }
 
     override fun save(file: File) {

@@ -3,7 +3,7 @@ import cc.lixou.stracciatella.config.YamlConfiguration
 
 fun main(args: Array<String>) {
     val config = YamlConfiguration()
-    config.data().set("users.lixou.age", 13)
-    config.save("test.yml")
+    config.load("test.yml")
+    println(config.data().getValues())
 //Stracciatella().start()
 }

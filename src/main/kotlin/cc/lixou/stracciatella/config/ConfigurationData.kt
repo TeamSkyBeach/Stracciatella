@@ -18,6 +18,18 @@ class ConfigurationData {
         }
     }
 
+    fun setValues(values: Map<*, *>) {
+        values.forEach {
+            if(it.value is Map<*, *>) {
+                val data = ConfigurationData()
+                data.setValues(it.value as Map<*, *>)
+                entries[it.key.toString()] = data
+            } else if(it.value != null) {
+                entries[it.key.toString()] = it.value as Any
+            }
+        }
+    }
+
     fun has(path: String): Boolean {
         resolvePath(path).also {
             return it.first.entries.containsKey(it.second)
