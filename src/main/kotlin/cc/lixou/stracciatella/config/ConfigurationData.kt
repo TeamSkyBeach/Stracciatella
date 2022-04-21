@@ -30,13 +30,17 @@ class ConfigurationData {
         }
     }
 
+    fun getValues(): Map<String, Any> {
+        return entries.toMap()
+    }
+
     fun resolvePath(path: String): Pair<ConfigurationData, String> {
         var lastWord = 0
         var nextSeperator = path.indexOf(seperator, lastWord)
         var configData = this
         while (nextSeperator != -1) {
             val node: String = path.substring(lastWord, nextSeperator)
-            configData = entries.getOrPut(node) { return@getOrPut ConfigurationData() } as ConfigurationData
+            configData = configData.entries.getOrPut(node) { return@getOrPut ConfigurationData() } as ConfigurationData
 
             lastWord = nextSeperator + 1
             nextSeperator = path.indexOf(seperator, lastWord)
