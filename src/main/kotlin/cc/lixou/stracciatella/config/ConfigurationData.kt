@@ -6,18 +6,28 @@ class ConfigurationData {
         const val seperator = '.'
     }
 
-    private val entries: HashMap<String, Any?> = HashMap()
+    private val entries: HashMap<String, Any> = HashMap()
 
     fun set(path: String, value: Any?) {
-
+        resolvePath(path).also {
+            if (value == null) {
+                it.first.entries.remove(it.second)
+            } else {
+                it.first.entries[it.second] = value
+            }
+        }
     }
 
     fun has(path: String): Boolean {
-        return false
+        resolvePath(path).also {
+            return it.first.entries.containsKey(it.second)
+        }
     }
 
     fun get(path: String, defaultValue: Any?): Any? {
-        return null
+        resolvePath(path).also {
+            return it.first.entries.getOrDefault(it.second, defaultValue)
+        }
     }
 
     fun resolvePath(path: String): Pair<ConfigurationData, String> {
