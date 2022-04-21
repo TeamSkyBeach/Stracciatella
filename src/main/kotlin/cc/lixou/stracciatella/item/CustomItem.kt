@@ -38,13 +38,13 @@ open class CustomItem(
         MinecraftServer.getGlobalEventHandler().addChild(eventNode)
     }
 
-    fun createItemStack(): ItemStack {
-        return prepareBuilder().build()
+    fun createItemStack(customMaterial: Material?): ItemStack {
+        return prepareBuilder(customMaterial).build()
     }
 
-    fun prepareBuilder(): ItemStack.Builder {
+    fun prepareBuilder(customMaterial: Material?): ItemStack.Builder {
         val builder = ItemStack
-            .builder(material)
+            .builder(customMaterial ?: material)
         customBuilder.internalApply(builder)
         builder.meta { meta ->
             meta.setCreamID(id)
