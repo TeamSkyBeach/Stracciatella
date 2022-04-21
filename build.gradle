@@ -15,7 +15,7 @@ repositories {
 dependencies {
     implementation 'com.github.Minestom:Minestom:3c0abb0409'
 
-    implementation 'com.github.TeamSkyBeach:KStom:latest'
+    implementation 'com.github.TeamSkyBeach:KStom:86d37c4edb'
 
     implementation "com.charleskorn.kaml:kaml:0.43.0" // Get the latest version number from https://github.com/charleskorn/kaml/releases/latest
 
