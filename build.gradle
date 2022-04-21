@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.Minestom:Minestom:f0fa81b712'
+    implementation 'com.github.Minestom:Minestom:3c0abb0409'
 
     implementation 'com.github.TeamSkyBeach:KStom:latest'
 
