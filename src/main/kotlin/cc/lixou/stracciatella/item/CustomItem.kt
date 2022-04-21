@@ -48,7 +48,6 @@ open class CustomItem(
         customBuilder.internalApply(builder)
         builder.meta { meta ->
             meta.setCreamID(id)
-            return@meta meta
         }
         return builder
     }

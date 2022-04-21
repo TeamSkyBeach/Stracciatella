@@ -57,7 +57,6 @@ class CustomItemBuilder(
                 // NORMAL META
                 builder.meta {
                     passedMetaWriting!!.invoke(it)
-                    return@meta it
                 }
             }
         }
