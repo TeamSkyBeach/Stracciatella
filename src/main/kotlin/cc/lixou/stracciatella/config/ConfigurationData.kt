@@ -31,7 +31,15 @@ class ConfigurationData {
     }
 
     fun getValues(): Map<String, Any> {
-        return entries.toMap()
+        val values = HashMap<String, Any>()
+        entries.forEach {
+            var value = it.value
+            if(value is ConfigurationData) {
+                value = (it.value as ConfigurationData).getValues()
+            }
+            values[it.key] = value
+        }
+        return values
     }
 
     fun resolvePath(path: String): Pair<ConfigurationData, String> {
