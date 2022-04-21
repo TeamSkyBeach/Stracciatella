@@ -22,29 +22,6 @@ open class CustomItem(
     companion object {
         val creamTag = Tag.String("creamID")
         val registryMap: HashMap<String, CustomItem> = HashMap()
-        private val eventNode = EventNode.type("customitem-listener", EventFilter.PLAYER)
-
-        init {
-            MinecraftServer.getGlobalEventHandler().addChild(eventNode)
-            eventNode.addListener(PlayerSwapItemEvent::class.java) { event ->
-                event.isCancelled =
-                    tryInteract(event, InteractReason.PlayerSwapItem, event.mainHandItem, event.offHandItem)
-            }
-            eventNode.addListener(InventoryPreClickEvent::class.java) { event ->
-                event.isCancelled =
-                    tryInteract(event, InteractReason.InventoryPreClickEvent, event.clickedItem, event.cursorItem)
-            }
-            eventNode.addListener(PlayerUseItemEvent::class.java) { event ->
-                event.isCancelled = tryInteract(event, InteractReason.PlayerUseItemEvent, event.itemStack)
-            }
-            eventNode.addListener(PlayerUseItemOnBlockEvent::class.java) { event ->
-                tryInteract(event, InteractReason.PlayerUseItemOnBlockEvent, event.itemStack)
-            }
-        }
-
-        private fun tryInteract(event: PlayerEvent, reason: InteractReason, vararg tests: ItemStack): Boolean {
-            return false
-        }
     }
 
     private val eventNode = EventNode.all("item-${id}")
