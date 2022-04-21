@@ -9,6 +9,7 @@ class YamlConfiguration : Configuration() {
     }
 
     override fun save(file: File) {
+        println(data.getValues().toString())
         TODO("Not yet implemented")
     }
 
