@@ -15,8 +15,8 @@ sizeZ: UShort // The amout of chunks in the z axis
 
 ```kotlin
 /* Chunk Data (summary) */
-uniqueChunks: BitSet(sizeX * sizeZ) // 0: Chunk is empty
-                                    // 1: Chunk is unique
+chunkMask: BitSet(sizeX * sizeZ) // 0: Chunk is empty
+                                 // 1: Chunk is unique
 ```
 
 ```kotlin

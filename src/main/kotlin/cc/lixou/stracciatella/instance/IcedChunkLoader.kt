@@ -11,7 +11,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.CompletableFuture
 
 class IcedChunkLoader(
@@ -39,6 +39,7 @@ class IcedChunkLoader(
             minZ = dis.readShort()
             sizeX = dis.readUnsignedShort().toUShort()
             sizeZ = dis.readUnsignedShort().toUShort()
+            // TODO: Read chunkMask BitSet
         }
     }
 
@@ -84,11 +85,19 @@ class IcedChunkLoader(
         }
 
         val list = ArrayList<IcedSectionData>()
-        for(i in chunk.minSection..chunk.maxSection) {
+        for (i in chunk.minSection..chunk.maxSection) {
             list.add(IcedSectionData(i.toByte()))
         }
 
-        chunkData[chunk.identifier] = IcedChunkData(list.toTypedArray())
+        var isEmpty = true
+        for (section in chunk.sections) {
+            if (section.blockPalette().count() > 0) {
+                isEmpty = false
+                break
+            }
+        }
+
+        chunkData[chunk.identifier] = IcedChunkData(isEmpty, list.toTypedArray())
 
         return CompletableFuture.completedFuture(null)
     }

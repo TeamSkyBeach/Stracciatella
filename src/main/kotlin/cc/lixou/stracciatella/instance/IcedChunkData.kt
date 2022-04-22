@@ -2,7 +2,7 @@ package cc.lixou.stracciatella.instance
 
 import java.io.DataOutputStream
 
-data class IcedChunkData(var sections: Array<IcedSectionData>) {
+data class IcedChunkData(var empty: Boolean, var sections: Array<IcedSectionData>) {
 
     fun write(dos: DataOutputStream) {
         sections.forEach { it.write(dos) }
@@ -14,13 +14,16 @@ data class IcedChunkData(var sections: Array<IcedSectionData>) {
 
         other as IcedChunkData
 
+        if (empty != other.empty) return false
         if (!sections.contentEquals(other.sections)) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return sections.contentHashCode()
+        var result = empty.hashCode()
+        result = 31 * result + sections.contentHashCode()
+        return result
     }
 
 }
