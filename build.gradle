@@ -1,6 +1,7 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.20'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.20'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'application'
 }
 
@@ -34,6 +35,12 @@ compileKotlin {
 
 compileTestKotlin {
     kotlinOptions.jvmTarget = '17'
+}
+
+shadowJar {
+    archivesBaseName = project.name
+    mergeServiceFiles()
+    minimize()
 }
 
 application {
