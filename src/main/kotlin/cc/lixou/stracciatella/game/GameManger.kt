@@ -3,26 +3,26 @@ package cc.lixou.stracciatella.game
 import net.minestom.server.entity.Player
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
+import kotlin.reflect.full.primaryConstructor
 
 object GameManger {
 
-    private val games: ConcurrentHashMap<KClass<out Game>, ArrayList<out Game>> = ConcurrentHashMap()
+    private val games: ConcurrentHashMap<KClass<out Game>, ArrayList<Game>> = ConcurrentHashMap()
 
     inline fun <reified T : Game> joinGame(players: Array<Player>) = joinGame(T::class, players)
 
     fun <T : Game> joinGame(clazz: KClass<out T>, players: Array<Player>) {
         val currentGames = games[clazz]
-        var game: Game? = null
-        currentGames?.forEach {
-            if (it.canJoin(players)) {
-                game = it
-                return@forEach
-            }
-        }
-        if (game == null) {
-            // TODO: Create new Game
-        }
+        var game: Game = currentGames?.find { it.canJoin(players) }
+            ?: createGame(clazz)
         // TODO: Make Game joinable
+    }
+
+    private fun <T : Game> createGame(clazz: KClass<out T>): Game {
+        val game: T = clazz.primaryConstructor?.call()
+            ?: throw java.lang.IllegalArgumentException("Game ${clazz.simpleName} has wrong constructor as a Game")
+        games[clazz]?.add(game)
+        return game
     }
 
     inline fun <reified T : Game> registerGame() = registerGame(T::class)
