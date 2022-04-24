@@ -11,9 +11,7 @@ fun ItemMeta.Builder.setCreamID(creamID: String): ItemMeta.Builder {
     return this
 }
 
-fun ItemMeta.Builder.setHeadTexture(texture: String): ItemMeta.Builder {
-    if (this is PlayerHeadMeta.Builder) {
-        skullOwner(UUID.randomUUID()).playerSkin(PlayerSkin(texture, ""))
-    }
+fun PlayerHeadMeta.Builder.headTexture(texture: String): PlayerHeadMeta.Builder {
+    skullOwner(UUID.randomUUID()).playerSkin(PlayerSkin(texture, ""))
     return this
 }
