@@ -12,8 +12,11 @@ abstract class Game {
      */
     abstract fun canJoin(players: Array<Player>): Boolean
 
+    abstract fun onJoin(player: Player)
+
     fun addPlayers(players: Array<Player>) {
         this.players.addAll(players)
+        players.forEach { onJoin(it) }
     }
 
 }
