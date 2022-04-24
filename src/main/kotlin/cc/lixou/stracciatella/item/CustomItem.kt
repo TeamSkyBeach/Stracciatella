@@ -51,11 +51,18 @@ open class CustomItem(
     }
 
     /**
-     * Checks if the item has same CreamID as this custom item
-     * @return if true: same CreamID
+     * Checks if the items all have same CreamID as this custom item
+     * @return if true: all have same CreamID
      */
-    fun validate(other: ItemStack): Boolean {
-        return other.getCreamID().equals(id)
+    fun validate(vararg others: ItemStack): Boolean {
+        var result = true
+        others.forEach {
+            if (!it.getCreamID().equals(id)) {
+                result = false
+                return@forEach
+            }
+        }
+        return result
     }
 
 }
