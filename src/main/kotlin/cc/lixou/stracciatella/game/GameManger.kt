@@ -12,10 +12,9 @@ object GameManger {
     inline fun <reified T : Game> joinGame(players: Array<Player>) = joinGame(T::class, players)
 
     fun <T : Game> joinGame(clazz: KClass<out T>, players: Array<Player>) {
-        val currentGames = games[clazz]
-        var game: Game = currentGames?.find { it.canJoin(players) }
+        val game: Game = games[clazz]?.find { it.canJoin(players) }
             ?: createGame(clazz)
-        // TODO: Make Game joinable
+        game.addPlayers(players)
     }
 
     private fun <T : Game> createGame(clazz: KClass<out T>): Game {
