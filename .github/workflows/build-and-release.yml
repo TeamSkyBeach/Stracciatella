@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: "Build Artifact"
+    name: "Build and Release Artifact"
     runs-on: "ubuntu-latest"
 
     steps:
@@ -20,14 +20,7 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: './gradlew clean shadowJar'
-  release:
-    name: "Release Artifact"
-    runs-on: "ubuntu-latest"
-    needs: build
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: GitHub Release
+      - name: Make Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
