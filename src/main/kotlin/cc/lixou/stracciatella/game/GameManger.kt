@@ -7,6 +7,7 @@ import kotlin.reflect.full.primaryConstructor
 
 object GameManger {
 
+    private val playerGame: ConcurrentHashMap<Player, Game> = ConcurrentHashMap()
     private val games: ConcurrentHashMap<KClass<out Game>, ArrayList<Game>> = ConcurrentHashMap()
 
     inline fun <reified T : Game> joinGame(players: Array<Player>) = joinGame(T::class, players)
@@ -14,6 +15,10 @@ object GameManger {
     fun <T : Game> joinGame(clazz: KClass<out T>, players: Array<Player>) {
         val game: Game = games[clazz]?.find { it.canJoin(players) }
             ?: createGame(clazz)
+        players.forEach {
+            playerGame[it]?.removePlayer(it)
+            playerGame[it] = game
+        }
         game.addPlayers(players)
     }
 
