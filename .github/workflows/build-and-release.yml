@@ -5,8 +5,8 @@ on:
     branches: [ main ]
 
 jobs:
-  pre-release:
-    name: "GitHub Release"
+  build:
+    name: "Build Artifact"
     runs-on: "ubuntu-latest"
 
     steps:
@@ -20,8 +20,14 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: './gradlew clean shadowJar'
-      - name: Make Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+  release:
+    name: "Release Artifact"
+    runs-on: "ubuntu-latest"
+    needs: build
+
+    steps:
+      - name: GitHub Release
+      - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: "latest"
@@ -29,6 +35,5 @@ jobs:
           title: "Development Build"
           files: |
             build/libs/*.jar
-            LICENSE
       - name: Trigger JitPack
         run: curl "https://jitpack.io/com/github/TeamSkyBeach/Stracciatella/${GITHUB_SHA:0:10}/build.log"
