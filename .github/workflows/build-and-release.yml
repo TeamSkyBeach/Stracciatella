@@ -26,6 +26,7 @@ jobs:
     needs: build
 
     steps:
+      - uses: actions/checkout@v2
       - name: GitHub Release
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
