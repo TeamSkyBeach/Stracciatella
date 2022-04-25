@@ -11,14 +11,14 @@ import java.util.*
 abstract class Game {
 
     protected val players = ArrayList<Player>()
-    protected val instances = ArrayList<Instance>()
+    protected lateinit var instance: Instance
     protected val uuid: UUID = UUID.randomUUID()
     protected val eventNode =
         EventNode.type("${this.javaClass.simpleName}-${uuid}", EventFilter.INSTANCE) { event, instance ->
             if (event is PlayerEvent) {
                 return@type players.contains(event.player)
             } else {
-                return@type instances.firstOrNull { it.uniqueId == instance.uniqueId } != null
+                return@type this.instance.uniqueId.equals(instance)
             }
         }
 
