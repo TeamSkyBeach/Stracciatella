@@ -1,0 +1,32 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  pre-release:
+    name: "GitHub Release"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+      - name: Build with Gradle
+        run: './gradlew clean shadowJar'
+      - name: Make Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            build/libs/*.jar
+            LICENSE
+      - name: Trigger JitPack
+        run: curl "https://jitpack.io/com/github/TeamSkyBeach/Stracciatella/${GITHUB_SHA:0:10}/build.log"
