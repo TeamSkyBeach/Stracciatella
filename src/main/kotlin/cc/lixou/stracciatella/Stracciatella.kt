@@ -1,6 +1,6 @@
 package cc.lixou.stracciatella
 
-import cc.lixou.stracciatella.game.GameManger
+import cc.lixou.stracciatella.game.GameManager
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.event.player.PlayerDisconnectEvent
@@ -22,7 +22,7 @@ class Stracciatella {
 
         val eventHandler = MinecraftServer.getGlobalEventHandler()
         eventHandler.addListener(PlayerDisconnectEvent::class.java) { event ->
-            GameManger.unregisterPlayer(event.player)
+            GameManager.unregisterPlayer(event.player)
         }
         eventHandler.addListener(PlayerLoginEvent::class.java) { event ->
             val player = event.player

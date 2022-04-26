@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
 
-object GameManger {
+object GameManager {
 
     private val playerGame: ConcurrentHashMap<Player, Game> = ConcurrentHashMap()
     private val games: ConcurrentHashMap<KClass<out Game>, ArrayList<Game>> = ConcurrentHashMap()
