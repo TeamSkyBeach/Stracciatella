@@ -10,6 +10,11 @@ object GameManger {
     private val playerGame: ConcurrentHashMap<Player, Game> = ConcurrentHashMap()
     private val games: ConcurrentHashMap<KClass<out Game>, ArrayList<Game>> = ConcurrentHashMap()
 
+    fun unregisterPlayer(player: Player) {
+        playerGame[player]?.removePlayer(player)
+        playerGame.remove(player)
+    }
+
     inline fun <reified T : Game> joinGame(players: Array<Player>) = joinGame(T::class, players)
 
     fun <T : Game> joinGame(clazz: KClass<out T>, players: Array<Player>) {
