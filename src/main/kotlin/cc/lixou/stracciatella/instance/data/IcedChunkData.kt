@@ -1,4 +1,4 @@
-package cc.lixou.stracciatella.instance
+package cc.lixou.stracciatella.instance.data
 
 import java.io.DataOutputStream
 

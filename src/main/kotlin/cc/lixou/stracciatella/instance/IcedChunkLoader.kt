@@ -1,5 +1,7 @@
 package cc.lixou.stracciatella.instance
 
+import cc.lixou.stracciatella.instance.data.IcedChunkData
+import cc.lixou.stracciatella.instance.data.IcedSectionData
 import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.IChunkLoader
 import net.minestom.server.instance.Instance
