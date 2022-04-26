@@ -3,13 +3,7 @@ package cc.lixou.stracciatella.item
 import cc.lixou.stracciatella.item.extensions.getCreamID
 import cc.lixou.stracciatella.item.extensions.setCreamID
 import net.minestom.server.MinecraftServer
-import net.minestom.server.event.EventFilter
 import net.minestom.server.event.EventNode
-import net.minestom.server.event.inventory.InventoryPreClickEvent
-import net.minestom.server.event.player.PlayerSwapItemEvent
-import net.minestom.server.event.player.PlayerUseItemEvent
-import net.minestom.server.event.player.PlayerUseItemOnBlockEvent
-import net.minestom.server.event.trait.PlayerEvent
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
 import net.minestom.server.tag.Tag
@@ -38,11 +32,11 @@ open class CustomItem(
         MinecraftServer.getGlobalEventHandler().addChild(eventNode)
     }
 
-    fun createItemStack(customMaterial: Material?): ItemStack {
+    fun createItemStack(customMaterial: Material? = null): ItemStack {
         return prepareBuilder(customMaterial).build()
     }
 
-    fun prepareBuilder(customMaterial: Material?): ItemStack.Builder {
+    fun prepareBuilder(customMaterial: Material? = null): ItemStack.Builder {
         val builder = ItemStack
             .builder(customMaterial ?: material)
         customBuilder.internalApply(builder)
@@ -57,11 +51,18 @@ open class CustomItem(
     }
 
     /**
-     * Checks if the item has same CreamID as this custom item
-     * @return if true: same CreamID
+     * Checks if one of the items havs same CreamID as this custom item
+     * @return if true: one of the items has same CreamID
      */
-    fun validate(other: ItemStack): Boolean {
-        return other.getCreamID().equals(id)
+    fun validate(vararg others: ItemStack): Boolean {
+        var result = false
+        others.forEach {
+            if (it.getCreamID().equals(id)) {
+                result = true
+                return@forEach
+            }
+        }
+        return result
     }
 
 }
