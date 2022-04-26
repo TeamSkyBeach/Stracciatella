@@ -1,7 +1,9 @@
 package cc.lixou.stracciatella
 
+import cc.lixou.stracciatella.game.GameManager
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
+import net.minestom.server.event.player.PlayerDisconnectEvent
 import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.instance.block.Block
 
@@ -19,6 +21,9 @@ class Stracciatella {
         }
 
         val eventHandler = MinecraftServer.getGlobalEventHandler()
+        eventHandler.addListener(PlayerDisconnectEvent::class.java) { event ->
+            GameManager.unregisterPlayer(event.player)
+        }
         eventHandler.addListener(PlayerLoginEvent::class.java) { event ->
             val player = event.player
             event.setSpawningInstance(instanceContainer)
