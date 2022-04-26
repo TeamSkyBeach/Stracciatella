@@ -1,6 +1,6 @@
 package cc.lixou.stracciatella.instance
 
-import cc.lixou.stracciatella.instance.data.IcedChunkData
+import cc.lixou.stracciatella.instance.data.IcedChunkDataOLD
 import cc.lixou.stracciatella.instance.data.IcedSectionData
 import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.IChunkLoader
@@ -25,7 +25,7 @@ class IcedChunkLoader(
     }
 
     private var path: Path = Path.of(worldFileName)
-    private val chunkData = HashMap<UUID, IcedChunkData>()
+    private val chunkData = HashMap<UUID, IcedChunkDataOLD>()
 
     private var minX: Short = 0
     private var minZ: Short = 0
@@ -70,7 +70,7 @@ class IcedChunkLoader(
     }
 
     /**
-     * Prepares the Chunk for saving in an [IcedChunkData]
+     * Prepares the Chunk for saving in an [IcedChunkDataOLD]
      */
     override fun saveChunk(chunk: Chunk): CompletableFuture<Void> {
         LOGGER.info("Saving chunk ${chunk.chunkX} - ${chunk.chunkZ}")
@@ -99,7 +99,7 @@ class IcedChunkLoader(
             }
         }
 
-        chunkData[chunk.identifier] = IcedChunkData(isEmpty, list.toTypedArray())
+        chunkData[chunk.identifier] = IcedChunkDataOLD(isEmpty, list.toTypedArray())
 
         return CompletableFuture.completedFuture(null)
     }
