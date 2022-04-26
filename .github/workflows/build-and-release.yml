@@ -3,6 +3,9 @@ name: Build and Release
 on:
   push:
     branches: [ main ]
+    paths:
+      - "src/**"
+      - "build.gradle"
 
 jobs:
   build:
