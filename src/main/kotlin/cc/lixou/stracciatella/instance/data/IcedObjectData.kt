@@ -40,7 +40,12 @@ class IcedObjectData(
     }
 
     fun save(dos: DataOutputStream) {
+        dos.writeShort(sizeX.toInt())
+        dos.writeShort(sizeZ.toInt())
 
+        for (dataChunk in chunkData) {
+            dataChunk.save(dos)
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package cc.lixou.stracciatella.instance.data
 
 import net.minestom.server.instance.Chunk
 import java.io.DataInputStream
+import java.io.DataOutputStream
 
 class IcedChunkData(
     val sectionData: Array<IcedSectionData>
@@ -29,7 +30,7 @@ class IcedChunkData(
 
     }
 
-    fun save() {
+    fun save(dos: DataOutputStream) {
 
     }
 
