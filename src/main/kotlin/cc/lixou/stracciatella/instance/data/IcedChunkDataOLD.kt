@@ -2,7 +2,7 @@ package cc.lixou.stracciatella.instance.data
 
 import java.io.DataOutputStream
 
-data class IcedChunkDataOLD(var empty: Boolean, var sections: Array<IcedSectionData>) {
+data class IcedChunkDataOLD(var empty: Boolean, var sections: Array<IcedSectionDataOLD>) {
 
     fun write(dos: DataOutputStream) {
         sections.forEach { it.write(dos) }

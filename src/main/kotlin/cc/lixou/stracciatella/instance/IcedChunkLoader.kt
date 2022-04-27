@@ -1,7 +1,7 @@
 package cc.lixou.stracciatella.instance
 
 import cc.lixou.stracciatella.instance.data.IcedChunkDataOLD
-import cc.lixou.stracciatella.instance.data.IcedSectionData
+import cc.lixou.stracciatella.instance.data.IcedSectionDataOLD
 import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.IChunkLoader
 import net.minestom.server.instance.Instance
@@ -86,9 +86,9 @@ class IcedChunkLoader(
             sizeZ = (chunk.chunkZ - minZ.toInt()).toUShort()
         }
 
-        val list = ArrayList<IcedSectionData>()
+        val list = ArrayList<IcedSectionDataOLD>()
         for (i in chunk.minSection..chunk.maxSection) {
-            list.add(IcedSectionData(i.toByte()))
+            list.add(IcedSectionDataOLD(i.toByte()))
         }
 
         var isEmpty = true
