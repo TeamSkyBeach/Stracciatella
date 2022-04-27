@@ -7,7 +7,7 @@ import java.io.DataOutputStream
 class IcedObjectData(
     val sizeX: UShort,
     val sizeZ: UShort,
-    val chunkData: List<IcedChunkData>
+    val chunkData: Map<Pair<Short, Short>, IcedChunkData>
 ) {
 
     companion object {
@@ -16,10 +16,10 @@ class IcedObjectData(
             val sizeX = dis.readUnsignedShort().toUShort()
             val sizeZ = dis.readUnsignedShort().toUShort()
 
-            val chunkData = mutableListOf<IcedChunkData>()
+            val chunkData = mutableMapOf<Pair<Short, Short>, IcedChunkData>()
             for (x in 0 until sizeX.toInt()) {
                 for (z in 0 until sizeZ.toInt()) {
-                    chunkData.add(IcedChunkData.load(dis))
+                    chunkData[Pair(x.toShort(), z.toShort())] = IcedChunkData.load(dis)
                 }
             }
 
@@ -30,9 +30,9 @@ class IcedObjectData(
             val sizeX = chunks.maxOf { it.chunkX } - chunks.minOf { it.chunkX } + 1
             val sizeZ = chunks.maxOf { it.chunkZ } - chunks.minOf { it.chunkZ } + 1
 
-            val chunkData = mutableListOf<IcedChunkData>()
+            val chunkData = mutableMapOf<Pair<Short, Short>, IcedChunkData>()
             for (chunk in chunks) {
-                chunkData.add(IcedChunkData.fromChunk(chunk))
+                chunkData[Pair(chunk.chunkX.toShort(), chunk.chunkZ.toShort())] = IcedChunkData.fromChunk(chunk)
             }
 
             return IcedObjectData(sizeX.toUShort(), sizeZ.toUShort(), chunkData)
@@ -43,8 +43,10 @@ class IcedObjectData(
         dos.writeShort(sizeX.toInt())
         dos.writeShort(sizeZ.toInt())
 
-        for (dataChunk in chunkData) {
-            dataChunk.save(dos)
+        for (x in 0 until sizeX.toInt()) {
+            for (z in 0 until sizeZ.toInt()) {
+                chunkData[Pair(x.toShort(), z.toShort())]?.save(dos)
+            }
         }
     }
 
