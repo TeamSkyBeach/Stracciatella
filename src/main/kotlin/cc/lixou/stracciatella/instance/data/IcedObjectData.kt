@@ -1,6 +1,7 @@
 package cc.lixou.stracciatella.instance.data
 
 import java.io.DataInputStream
+import java.io.DataOutputStream
 
 class IcedObjectData(
     val sizeX: UShort,
@@ -26,7 +27,7 @@ class IcedObjectData(
 
     }
 
-    fun save() {
+    fun save(dos: DataOutputStream) {
 
     }
 

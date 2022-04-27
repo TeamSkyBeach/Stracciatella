@@ -1,10 +1,7 @@
 package cc.lixou.stracciatella.instance
 
 import cc.lixou.stracciatella.instance.data.IcedObjectData
-import java.io.DataInputStream
-import java.io.File
-import java.io.FileInputStream
-import java.io.InputStream
+import java.io.*
 
 object IcedData {
 
@@ -22,7 +19,23 @@ object IcedData {
             objects[name] = objectData
         }
 
+        reader.close()
+
         return objects
+    }
+
+    fun toFile(file: File, objectData: Map<String, IcedObjectData>) = toOututStream(FileOutputStream(file), objectData)
+
+    fun toOututStream(outptStream: OutputStream, objectData: Map<String, IcedObjectData>) {
+        val writer = DataOutputStream(outptStream)
+
+        for (dataObject in objectData) {
+            writer.writeUTF(dataObject.key)
+            dataObject.value.save(writer)
+        }
+
+        writer.flush()
+        writer.close()
     }
 
 }
