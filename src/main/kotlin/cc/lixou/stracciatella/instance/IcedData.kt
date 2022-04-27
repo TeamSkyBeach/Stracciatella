@@ -4,11 +4,14 @@ import cc.lixou.stracciatella.instance.data.IcedObjectData
 import java.io.DataInputStream
 import java.io.File
 import java.io.FileInputStream
+import java.io.InputStream
 
-object IcedFile {
+object IcedData {
 
-    fun read(file: File): Map<String, IcedObjectData> {
-        val reader = DataInputStream(FileInputStream(file))
+    fun fromFile(file: File): Map<String, IcedObjectData> = fromInputStream(FileInputStream(file))
+
+    fun fromInputStream(inputStream: InputStream): Map<String, IcedObjectData> {
+        val reader = DataInputStream(inputStream)
         val objects = mutableMapOf<String, IcedObjectData>()
         val objectAmount = reader.readByte()
 
