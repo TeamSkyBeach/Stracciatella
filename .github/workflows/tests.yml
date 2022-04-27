@@ -1,0 +1,33 @@
+name: Test Stracciatella
+
+on:
+  push:
+    branches-ignore:
+      - "main" # Uses its own tests in build-and-release.yml
+    paths:
+      - "src/**"
+      - "build.gradle"
+  pull_request:
+    branches: [ main ]
+    paths:
+      - "src/**"
+      - "build.gradle"
+
+jobs:
+  test:
+    name: "Build and Test"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build Stracciatella
+        run: './gradlew clean classes testClasses'
+      - name: Run Tests
+        run: './gradlew test'

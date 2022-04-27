@@ -21,7 +21,11 @@ jobs:
           distribution: 'zulu'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build with Gradle
+      - name: Build Stracciatella Classes and TestClasses
+        run: './gradlew clean classes testClasses'
+      - name: Run Tests
+        run: './gradlew test'
+      - name: Build Artifact with Gradle
         run: './gradlew clean shadowJar'
       - name: Make Release
         uses: "marvinpinto/action-automatic-releases@latest"
