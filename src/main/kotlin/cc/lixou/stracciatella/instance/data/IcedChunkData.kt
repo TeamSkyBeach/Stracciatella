@@ -31,7 +31,9 @@ class IcedChunkData(
     }
 
     fun save(dos: DataOutputStream) {
-
+        for (dataSection in sectionData) {
+            dataSection.save(dos)
+        }
     }
 
 }

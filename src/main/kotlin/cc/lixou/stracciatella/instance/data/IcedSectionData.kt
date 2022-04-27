@@ -8,6 +8,7 @@ import org.jglrxavpok.hephaistos.collections.ImmutableLongArray
 import org.jglrxavpok.hephaistos.mca.unpack
 import org.jglrxavpok.hephaistos.nbt.NBTCompound
 import java.io.DataInputStream
+import java.io.DataOutputStream
 
 class IcedSectionData(
     val batch: RelativeBlockBatch,
@@ -85,7 +86,7 @@ class IcedSectionData(
 
     }
 
-    fun save() {
+    fun save(dos: DataOutputStream) {
 
     }
 
