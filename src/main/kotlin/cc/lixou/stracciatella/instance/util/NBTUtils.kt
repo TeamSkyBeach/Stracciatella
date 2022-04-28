@@ -2,6 +2,7 @@ package cc.lixou.stracciatella.instance.util
 
 import net.minestom.server.instance.block.Block
 import org.jglrxavpok.hephaistos.nbt.*
+import org.jglrxavpok.hephaistos.nbt.mutable.MutableNBTCompound
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
@@ -27,6 +28,17 @@ object NBTUtils {
         }
 
         return Block.fromNamespaceId(name)?.withProperties(newProps)
+    }
+
+    fun getCompoundFromBlock(block: Block): NBTCompound {
+        val compund = MutableNBTCompound()
+        compund.setString("Name", block.name())
+        val properties = MutableNBTCompound()
+        for (property in block.properties()) {
+            properties.setString(property.key, property.value)
+        }
+        compund["Properties"] = properties.toCompound()
+        return compund.toCompound()
     }
 
 }
