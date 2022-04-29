@@ -1,6 +1,7 @@
 package cc.lixou.stracciatella
 
 import cc.lixou.stracciatella.game.GameManager
+import cc.lixou.stracciatella.instance.data.IcedSectionData
 import cc.lixou.stracciatella.instance.extensions.createIcedInstance
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
@@ -8,6 +9,8 @@ import net.minestom.server.event.player.PlayerChatEvent
 import net.minestom.server.event.player.PlayerDisconnectEvent
 import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.instance.block.Block
+import java.io.DataOutputStream
+import java.io.FileOutputStream
 
 class Stracciatella {
 
@@ -32,7 +35,10 @@ class Stracciatella {
             player.respawnPoint = Pos(0.0, 42.0, 0.0)
         }
         eventHandler.addListener(PlayerChatEvent::class.java) {
+            val chunk = instanceContainer.getChunk(0, 0)
             println(instanceContainer.getChunk(0, 0)?.sections?.size)
+            IcedSectionData.fromChunk(chunk!!, chunk.getSection(2))
+                .save(DataOutputStream(FileOutputStream("test.iced")))
         }
 
         MinecraftServer.setBrandName("Stracciatella (Minestom powered)")
