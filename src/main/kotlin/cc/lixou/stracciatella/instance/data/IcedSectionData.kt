@@ -6,7 +6,9 @@ import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.Section
 import org.jglrxavpok.hephaistos.collections.ImmutableLongArray
 import org.jglrxavpok.hephaistos.mca.unpack
+import org.jglrxavpok.hephaistos.nbt.NBT
 import org.jglrxavpok.hephaistos.nbt.NBTCompound
+import org.jglrxavpok.hephaistos.nbt.NBTType
 import java.io.DataInputStream
 import java.io.DataOutputStream
 
@@ -33,7 +35,7 @@ class IcedSectionData(
             for (i in 0 until paletteLength) {
                 val nbtLength = dis.readInt()
                 val nbtRaw = dis.readNBytes(nbtLength)
-                val nbtCompound = NBTUtils.readNBTTag<NBTCompound>(nbtRaw) ?: continue
+                val nbtCompound = NBTUtils.readNBTTagRaw(nbtRaw, NBTType.TAG_Compound)
                 paletteList.add(nbtCompound)
             }
 
@@ -89,8 +91,9 @@ class IcedSectionData(
 
     fun save(dos: DataOutputStream) {
         // Light Data
-        dos.writeBoolean(true)
-        dos.write(blockLight)
+        dos.writeBoolean(false)
+        //dos.write(blockLight)
+        //println(blockLight.size) // <- this is 0
 
         // Palette Data
         dos.writeInt(blocks.palette.elements.size)
@@ -99,7 +102,15 @@ class IcedSectionData(
             dos.writeInt(serialized.size)
             dos.write(serialized)
         }
-        println(blocks.palette.toNBT().toSNBT())
+
+        // Block States
+        val states = NBT.LongArray(blocks.palette.compactIDs(blocks.blocks.values.toTypedArray(), minimumBitSize = 4))
+        dos.writeInt(states.size)
+        states.writeContents(dos)
+
+        // Skylight
+        dos.writeBoolean(false)
+        //dos.write(skyLight)
     }
 
 }
