@@ -9,7 +9,9 @@ import net.minestom.server.event.player.PlayerChatEvent
 import net.minestom.server.event.player.PlayerDisconnectEvent
 import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.instance.block.Block
+import java.io.DataInputStream
 import java.io.DataOutputStream
+import java.io.FileInputStream
 import java.io.FileOutputStream
 
 class Stracciatella {
@@ -34,11 +36,19 @@ class Stracciatella {
             event.setSpawningInstance(instanceContainer)
             player.respawnPoint = Pos(0.0, 42.0, 0.0)
         }
+        var bool = false
         eventHandler.addListener(PlayerChatEvent::class.java) {
-            val chunk = instanceContainer.getChunk(0, 0)
-            println(instanceContainer.getChunk(0, 0)?.sections?.size)
-            IcedSectionData.fromChunk(chunk!!, chunk.getSection(2))
-                .save(DataOutputStream(FileOutputStream("test.iced")))
+            val chunk = instanceContainer.getChunkAt(it.player.position)
+            val section = chunk?.getSectionAt(it.player.position.blockY())
+            if (bool) {
+                bool = false
+                val iced = IcedSectionData.load(DataInputStream(FileInputStream("test.iced")))
+                println(iced.blocks.palette.toNBT().toSNBT()) // THIS WORKS :D
+            } else {
+                bool = true
+                IcedSectionData.fromChunk(chunk!!, section!!)
+                    .save(DataOutputStream(FileOutputStream("test.iced")))
+            }
         }
 
         MinecraftServer.setBrandName("Stracciatella (Minestom powered)")
