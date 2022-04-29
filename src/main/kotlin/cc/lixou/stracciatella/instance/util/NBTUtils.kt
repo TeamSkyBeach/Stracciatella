@@ -13,8 +13,12 @@ object NBTUtils {
     inline fun <reified T : NBT> readNBTTag(bytes: ByteArray): T? =
         NBTReader(ByteArrayInputStream(bytes), CompressedProcesser.NONE).read() as? T
 
+    @Suppress("unchecked_cast")
+    fun <T : NBT> readNBTTagRaw(bytes: ByteArray, type: NBTType<T>): T =
+        NBTReader(ByteArrayInputStream(bytes), CompressedProcesser.NONE).readRaw(type.ordinal) as T
+
     inline fun <reified T : NBT> writeNBTTag(tag: T): ByteArray =
-        ByteArrayOutputStream().also { NBTWriter(it).writeRaw(tag) }.toByteArray()
+        ByteArrayOutputStream().also { NBTWriter(it, CompressedProcesser.NONE).writeRaw(tag) }.toByteArray()
 
     fun getBlockFromCompound(compound: NBTCompound): Block? {
         val name = compound.getString("Name") ?: return null
