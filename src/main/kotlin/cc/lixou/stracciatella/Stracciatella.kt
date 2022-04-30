@@ -1,10 +1,12 @@
 package cc.lixou.stracciatella
 
 import cc.lixou.stracciatella.game.GameManager
+import cc.lixou.stracciatella.instance.TESTAAA
 import cc.lixou.stracciatella.instance.data.IcedSectionData
 import cc.lixou.stracciatella.instance.extensions.createIcedInstance
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
+import net.minestom.server.entity.GameMode
 import net.minestom.server.event.player.PlayerChatEvent
 import net.minestom.server.event.player.PlayerDisconnectEvent
 import net.minestom.server.event.player.PlayerLoginEvent
@@ -13,6 +15,7 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import kotlin.math.floor
 
 class Stracciatella {
 
@@ -39,15 +42,27 @@ class Stracciatella {
         var bool = false
         eventHandler.addListener(PlayerChatEvent::class.java) {
             val chunk = instanceContainer.getChunkAt(it.player.position)
-            val section = chunk?.getSectionAt(it.player.position.blockY())
-            if (bool) {
-                bool = false
-                val iced = IcedSectionData.load(DataInputStream(FileInputStream("test.iced")))
-                println(iced.blocks.palette.toNBT().toSNBT()) // THIS WORKS :D
-            } else {
-                bool = true
-                IcedSectionData.fromChunk(chunk!!, section!!)
-                    .save(DataOutputStream(FileOutputStream("test.iced")))
+            val section = chunk?.getSectionAt(it.player.position.blockY())!!
+            if (it.message.lowercase() == "load") {
+                IcedSectionData.load(DataInputStream(FileInputStream("testlol.iced"))).paste(
+                    it.player.instance!!,
+                    Pos(
+                        chunk.chunkX.toDouble() * 16,
+                        floor(it.player.position.blockY().toDouble() / 16) * 16,
+                        chunk.chunkZ.toDouble() * 16
+                    )
+                )
+            } else if (it.message.lowercase() == "save") {
+                IcedSectionData.fromChunk(
+                    chunk,
+                    floor(it.player.position.blockY().toDouble() / 16).toInt(), section
+                ).save(DataOutputStream(FileOutputStream("testlol.iced")))
+            } else if (it.message.lowercase() == "creative") {
+                it.player.gameMode = GameMode.CREATIVE
+            } else if (it.message.lowercase() == "spec") {
+                it.player.gameMode = GameMode.SPECTATOR
+            } else if (it.message.lowercase() == "testt") {
+                TESTAAA.test()
             }
         }
 
