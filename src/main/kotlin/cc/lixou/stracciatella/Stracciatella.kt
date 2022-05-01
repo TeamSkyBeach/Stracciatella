@@ -1,7 +1,6 @@
 package cc.lixou.stracciatella
 
 import cc.lixou.stracciatella.game.GameManager
-import cc.lixou.stracciatella.instance.TESTAAA
 import cc.lixou.stracciatella.instance.data.IcedSectionData
 import cc.lixou.stracciatella.instance.extensions.createIcedInstance
 import net.minestom.server.MinecraftServer
@@ -40,6 +39,7 @@ class Stracciatella {
             player.respawnPoint = Pos(0.0, 42.0, 0.0)
         }
         var bool = false
+        var sectest: IcedSectionData? = null
         eventHandler.addListener(PlayerChatEvent::class.java) {
             val chunk = instanceContainer.getChunkAt(it.player.position)
             val section = chunk?.getSectionAt(it.player.position.blockY())!!
@@ -61,8 +61,21 @@ class Stracciatella {
                 it.player.gameMode = GameMode.CREATIVE
             } else if (it.message.lowercase() == "spec") {
                 it.player.gameMode = GameMode.SPECTATOR
-            } else if (it.message.lowercase() == "testt") {
-                TESTAAA.test()
+            } else if (it.message.lowercase() == "savemem") {
+                sectest = IcedSectionData.fromChunk(
+                    chunk,
+                    floor(it.player.position.blockY().toDouble() / 16).toInt(),
+                    section
+                )
+            } else if (it.message.lowercase() == "loadmem") {
+                sectest?.paste(
+                    it.player.instance!!,
+                    Pos(
+                        chunk.chunkX.toDouble() * 16,
+                        floor(it.player.position.blockY().toDouble() / 16) * 16,
+                        chunk.chunkZ.toDouble() * 16
+                    )
+                )
             }
         }
 

@@ -1,7 +1,6 @@
 package cc.lixou.stracciatella.instance.data
 
 import cc.lixou.stracciatella.instance.LixousBatch
-import cc.lixou.stracciatella.instance.TESTAAA
 import cc.lixou.stracciatella.instance.util.NBTUtils
 import net.minestom.server.coordinate.Point
 import net.minestom.server.instance.Chunk
@@ -49,12 +48,12 @@ class IcedSectionData(
             val sizeInBits = compactedBlockStates.size * 64 / 4096
             val blockStates = unpack(compactedBlockStates, sizeInBits).sliceArray(0 until 4096)
 
-            val blocks = LixousBatch()
+            val blocks = LixousBatch(16, 16, 16)
 
-            for (y in 0 until 16) {
-                for (z in 0 until 16) {
-                    for (x in 0 until 16) {
-                        val pos = y * 16 * 16 + z * 16 + x
+            for (x in 0 until 16) {
+                for (y in 0 until 16) {
+                    for (z in 0 until 16) {
+                        val pos = x * 16 * 16 + y * 16 + z
                         val value = paletteList[blockStates[pos]]
                         val block = NBTUtils.getBlockFromCompound(value) ?: continue
                         blocks[x, y, z] = block
@@ -68,23 +67,20 @@ class IcedSectionData(
                 dis.readNBytes(2048)
             } else ByteArray(2048)
 
-            TESTAAA.loaded = blocks
-
             return IcedSectionData(blocks, blockLight, skyLight)
         }
 
         fun fromChunk(chunk: Chunk, sectionIndex: Int, section: Section): IcedSectionData {
             val blockLight = section.blockLight
 
-            val blocks = LixousBatch()
+            val blocks = LixousBatch(16, 16, 16)
 
             val sectionPos = sectionIndex * 16
-            println(sectionPos)
 
-            for (y in sectionPos until sectionPos + 16) {
-                for (z in 0 until 16) {
-                    for (x in 0 until 16) {
-                        val block = chunk.getBlock(x, y, z)
+            for (x in 0 until 16) {
+                for (y in 0 until 16) {
+                    for (z in 0 until 16) {
+                        val block = chunk.getBlock(x, y + sectionPos, z)
                         blocks[x, y, z] = block
                     }
                 }
@@ -111,11 +107,8 @@ class IcedSectionData(
             dos.write(serialized)
         }
 
-        TESTAAA.saved = blocks
-
         // Block States
-        val states = NBT.LongArray(blocks.palette.compactIDs(blocks.blocks.values.toTypedArray(), minimumBitSize = 4))
-        dos.writeInt(states.size)
+        val states = NBT.LongArray(blocks.palette.compactIDs(blocks.blocks))
         states.writeContents(dos)
 
         // Skylight
