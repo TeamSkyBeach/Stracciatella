@@ -4,23 +4,15 @@ import net.minestom.server.instance.block.Block
 import org.jglrxavpok.hephaistos.nbt.*
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.DataInputStream
 
 /**
  * @author From https://github.com/CatDevz/SlimeLoader/blob/master/src/main/kotlin/gg/astromc/slimeloader/helpers/NBTHelpers.kt
  */
 object NBTUtils {
 
-    inline fun <reified T : NBT> readNBTTag(bytes: ByteArray): T? =
-        NBTReader(ByteArrayInputStream(bytes), CompressedProcesser.NONE).read() as? T
-
     @Suppress("unchecked_cast")
     fun <T : NBT> readNBTTagRaw(bytes: ByteArray, type: NBTType<T>): T =
         NBTReader(ByteArrayInputStream(bytes), CompressedProcesser.NONE).readRaw(type.ordinal) as T
-
-    @Suppress("unchecked_cast")
-    fun <T : NBT> readNBTTagRaw(dis: DataInputStream, type: NBTType<T>): T =
-        NBTReader(dis, CompressedProcesser.NONE).readRaw(type.ordinal) as T
 
     inline fun <reified T : NBT> writeNBTTag(tag: T): ByteArray =
         ByteArrayOutputStream().also { NBTWriter(it, CompressedProcesser.NONE).writeRaw(tag) }.toByteArray()
