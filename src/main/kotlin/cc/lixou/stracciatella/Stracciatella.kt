@@ -1,7 +1,7 @@
 package cc.lixou.stracciatella
 
 import cc.lixou.stracciatella.game.GameManager
-import cc.lixou.stracciatella.instance.data.IcedSectionData
+import cc.lixou.stracciatella.instance.data.IcedChunkData
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.entity.GameMode
@@ -13,7 +13,6 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import kotlin.math.floor
 
 class Stracciatella {
 
@@ -39,21 +38,12 @@ class Stracciatella {
         }
         eventHandler.addListener(PlayerChatEvent::class.java) {
             val chunk = instanceContainer.getChunkAt(it.player.position)
-            val section = chunk?.getSectionAt(it.player.position.blockY())!!
             if (it.message.lowercase() == "load") {
-                IcedSectionData.load(DataInputStream(FileInputStream("testlol.iced"))).paste(
-                    it.player.instance!!,
-                    Pos(
-                        chunk.chunkX.toDouble() * 16,
-                        floor(it.player.position.blockY().toDouble() / 16) * 16,
-                        chunk.chunkZ.toDouble() * 16
-                    )
+                IcedChunkData.load(DataInputStream(FileInputStream("mycoolchunk.iced"))).paste(
+                    it.player.instance!!, chunk!!.chunkX, chunk.chunkZ
                 )
             } else if (it.message.lowercase() == "save") {
-                IcedSectionData.fromChunk(
-                    chunk,
-                    floor(it.player.position.blockY().toDouble() / 16).toInt(), section
-                ).save(DataOutputStream(FileOutputStream("testlol.iced")))
+                IcedChunkData.fromChunk(chunk!!).save(DataOutputStream(FileOutputStream("mycoolchunk.iced")))
             } else if (it.message.lowercase() == "creative") {
                 it.player.gameMode = GameMode.CREATIVE
             } else if (it.message.lowercase() == "spec") {
