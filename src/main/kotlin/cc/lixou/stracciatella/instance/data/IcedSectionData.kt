@@ -10,7 +10,6 @@ import org.jglrxavpok.hephaistos.collections.ImmutableLongArray
 import org.jglrxavpok.hephaistos.mca.unpack
 import org.jglrxavpok.hephaistos.nbt.NBT
 import org.jglrxavpok.hephaistos.nbt.NBTCompound
-import org.jglrxavpok.hephaistos.nbt.NBTType
 import java.io.DataInputStream
 import java.io.DataOutputStream
 
@@ -37,7 +36,7 @@ class IcedSectionData(
             for (i in 0 until paletteLength) {
                 val nbtLength = dis.readInt()
                 val nbtRaw = dis.readNBytes(nbtLength)
-                val nbtCompound = NBTUtils.readNBTTagRaw(nbtRaw, NBTType.TAG_Compound)
+                val nbtCompound = NBTUtils.readNBTTag<NBTCompound>(nbtRaw)
                 paletteList.add(nbtCompound)
             }
 
