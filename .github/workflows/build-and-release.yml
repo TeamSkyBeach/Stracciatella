@@ -1,0 +1,40 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "src/**"
+      - "build.gradle"
+
+jobs:
+  build:
+    name: "Build and Release Artifact"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build Stracciatella Classes and TestClasses
+        run: './gradlew clean classes testClasses'
+      - name: Run Tests
+        run: './gradlew test'
+      - name: Build Artifact with Gradle
+        run: './gradlew clean shadowJar'
+      - name: Make Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            build/libs/*.jar
+      - name: Trigger JitPack
+        run: curl "https://jitpack.io/com/github/TeamSkyBeach/Stracciatella/${GITHUB_SHA:0:10}/build.log"

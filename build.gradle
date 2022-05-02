@@ -1,6 +1,7 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.20'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.20'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'application'
 }
 
@@ -13,13 +14,13 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.Minestom:Minestom:3f98bde82e'
+    api 'com.github.Minestom:Minestom:ef53559349'
 
-    implementation 'com.github.TeamSkyBeach:KStom:86d37c4edb'
+    api 'com.github.TeamSkyBeach:KStom:86d37c4edb'
 
     implementation "com.charleskorn.kaml:kaml:0.43.0" // Get the latest version number from https://github.com/charleskorn/kaml/releases/latest
 
-    implementation "net.kyori:adventure-text-minimessage:4.10.1"
+    api "net.kyori:adventure-text-minimessage:4.10.1"
 
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
 }
@@ -34,6 +35,12 @@ compileKotlin {
 
 compileTestKotlin {
     kotlinOptions.jvmTarget = '17'
+}
+
+shadowJar {
+    archivesBaseName = project.name
+    mergeServiceFiles()
+    //minimize() <- makes error with tinylog >:(
 }
 
 application {
