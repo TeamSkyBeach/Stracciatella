@@ -1,9 +1,12 @@
 package cc.lixou.stracciatella
 
-import cc.lixou.stracciatella.npc.NPC
 import cc.lixou.stracciatella.game.GameManager
+import cc.lixou.stracciatella.npc.EntityNPC
+import net.kyori.adventure.text.Component
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
+import net.minestom.server.entity.EntityType
+import net.minestom.server.entity.metadata.villager.VillagerMeta
 import net.minestom.server.event.player.PlayerDisconnectEvent
 import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.instance.block.Block
@@ -21,9 +24,15 @@ class Stracciatella {
             unit.modifier().fillHeight(0, 40, Block.GRASS_BLOCK)
         }
 
-        NPC.createPlayer("Kevin") {
-            it.teleport(Pos(2.0, 42.0, 5.0))
-        }
+        val npc = EntityNPC(EntityType.VILLAGER, Pos(2.0, 42.0, 5.0), instanceContainer).meta<VillagerMeta> {
+            it.customName = Component.text("KAKA")
+            it.isCustomNameVisible = true
+            val villagerData = it.villagerData
+            villagerData.type = VillagerMeta.Type.DESERT
+            villagerData.level = VillagerMeta.Level.MASTER
+            villagerData.profession = VillagerMeta.Profession.FARMER
+            it.villagerData = villagerData
+        }.spawn()
 
         val eventHandler = MinecraftServer.getGlobalEventHandler()
         eventHandler.addListener(PlayerDisconnectEvent::class.java) { event ->

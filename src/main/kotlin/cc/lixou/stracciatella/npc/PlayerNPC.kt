@@ -4,7 +4,12 @@ import net.minestom.server.entity.fakeplayer.FakePlayer
 import net.minestom.server.entity.fakeplayer.FakePlayerOption
 import java.util.*
 
-class PlayerNPC(uuid: UUID, username: String, options: FakePlayerOption, spawnCallback: (FakePlayer) -> Unit) : NPC {
+class PlayerNPC(
+    username: String,
+    options: FakePlayerOption,
+    uuid: UUID = UUID.randomUUID(),
+    spawnCallback: (FakePlayer) -> Unit
+) {
 
     init {
         FakePlayer.initPlayer(uuid, username, options, spawnCallback)
