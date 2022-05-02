@@ -1,10 +1,13 @@
 package cc.lixou.stracciatella.instance
 
 import net.minestom.server.coordinate.Point
+import net.minestom.server.coordinate.Vec
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
+import net.minestom.server.instance.block.BlockHandler
 import org.jglrxavpok.hephaistos.mca.BlockPalette
 import org.jglrxavpok.hephaistos.mca.BlockState
+import org.jglrxavpok.hephaistos.nbt.NBTCompound
 
 class LixousBatch(
     val sizeX: Int,
@@ -13,6 +16,7 @@ class LixousBatch(
 ) {
 
     val blocks = Array(sizeX * sizeY * sizeZ) { BlockState.AIR }
+    val datas = HashMap<Vec, Pair<BlockHandler?, NBTCompound>>()
     val palette = BlockPalette()
 
     init {
@@ -28,9 +32,26 @@ class LixousBatch(
         blocks[index(x, y, z)] = state
     }
 
-    operator fun get(x: Int, y: Int, z: Int): Block? {
+    fun setData(x: Number, y: Number, z: Number, data: NBTCompound, handler: BlockHandler?) {
+        val vec = Vec(x.toDouble(), y.toDouble(), z.toDouble())
+        if (handler != null) {
+            datas[vec] = Pair(handler, data)
+        } else {
+            datas.remove(vec)
+        }
+    }
+
+    operator fun get(x: Int, y: Int, z: Int): Block {
         val state = getState(x, y, z)
-        return Block.fromNamespaceId(state.name)?.withProperties(state.properties)
+        var block = Block.fromNamespaceId(state.name)?.withProperties(state.properties)!!
+        val blockData = datas[Vec(x.toDouble(), y.toDouble(), z.toDouble())]
+        if (blockData != null) {
+            if (blockData.first != null) {
+                block = block.withHandler(blockData.first)
+            }
+            block = block.withNbt(blockData.second)
+        }
+        return block
     }
 
     fun getState(x: Int, y: Int, z: Int): BlockState = blocks[index(x, y, z)]
@@ -42,7 +63,7 @@ class LixousBatch(
             for (y in 0 until sizeY) {
                 for (z in 0 until sizeZ) {
                     val blockPos = pos.add(x.toDouble(), y.toDouble(), z.toDouble())
-                    instance.setBlock(blockPos, get(x, y, z)!!)
+                    instance.setBlock(blockPos, get(x, y, z))
                 }
             }
         }

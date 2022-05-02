@@ -6,10 +6,11 @@ import net.minestom.server.coordinate.Point
 import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.Section
+import net.minestom.server.instance.block.BlockHandler
 import org.jglrxavpok.hephaistos.collections.ImmutableLongArray
 import org.jglrxavpok.hephaistos.mca.unpack
-import org.jglrxavpok.hephaistos.nbt.NBT
-import org.jglrxavpok.hephaistos.nbt.NBTCompound
+import org.jglrxavpok.hephaistos.nbt.*
+import world.cepi.kstom.Manager
 import java.io.DataInputStream
 import java.io.DataOutputStream
 
@@ -60,6 +61,29 @@ class IcedSectionData(
                 }
             }
 
+            // Tile Entities
+            @Suppress("unchecked_cast")
+            val tileEntites = NBTReader(dis, CompressedProcesser.NONE).read() as NBTList<NBTCompound>
+            tileEntites.forEach { nbtCompound ->
+                val x = nbtCompound.getByte("x")!!
+                val y = nbtCompound.getByte("y")!!
+                val z = nbtCompound.getByte("z")!!
+                val id = nbtCompound.getString("id")
+
+                var handler: BlockHandler? = null
+                if (id != null) {
+                    handler = Manager.block.getHandlerOrDummy(id)
+                }
+
+                val mutableCompound = nbtCompound.toMutableCompound()
+                mutableCompound.remove("x")
+                mutableCompound.remove("y")
+                mutableCompound.remove("z")
+                mutableCompound.remove("id")
+
+                blocks.setData(x, y, z, mutableCompound.toCompound(), handler)
+            }
+
             // Skylight
             val hasSkyLight = dis.readBoolean()
             val skyLight = if (hasSkyLight) {
@@ -81,6 +105,16 @@ class IcedSectionData(
                     for (z in 0 until 16) {
                         val block = chunk.getBlock(x, y + sectionPos, z)
                         blocks[x, y, z] = block
+                        if (block.nbt() != null || block.handler() != null) {
+                            val compound = block.nbt()!!.toMutableCompound()
+                            compound.setByte("x", x.toByte())
+                            compound.setByte("y", y.toByte())
+                            compound.setByte("z", z.toByte())
+                            if (block.handler() != null) {
+                                compound.setString("id", block.handler()!!.namespaceId.asString())
+                            }
+                            blocks.setData(x, y, z, compound.toCompound(), block.handler())
+                        }
                     }
                 }
             }
@@ -109,6 +143,21 @@ class IcedSectionData(
         // Block States
         val states = NBT.LongArray(blocks.palette.compactIDs(blocks.blocks))
         states.writeContents(dos)
+
+        // Tile Entities
+        val list = mutableListOf<NBTCompound>()
+        blocks.datas.forEach { (vec, data) ->
+            if (data.first == null && data.second.isEmpty()) return@forEach
+            val compound = data.second.toMutableCompound()
+            compound.setByte("x", vec.blockX().toByte())
+            compound.setByte("y", vec.blockY().toByte())
+            compound.setByte("z", vec.blockZ().toByte())
+            if (data.first != null) {
+                compound.setString("id", data.first!!.namespaceId.asString())
+            }
+            list.add(compound.toCompound())
+        }
+        NBTWriter(dos, CompressedProcesser.NONE).writeNamed("", NBT.List(NBTType.TAG_Compound, list))
 
         // Skylight
         dos.writeBoolean(false)
