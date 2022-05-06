@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    api 'com.github.Minestom:Minestom:ef53559349'
+    api 'com.github.Minestom:Minestom:cef824bc16'
 
     api 'com.github.TeamSkyBeach:KStom:86d37c4edb'
 
