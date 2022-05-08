@@ -18,7 +18,7 @@ abstract class Game {
             if (event is PlayerEvent) {
                 return@type players.contains(event.player)
             } else {
-                return@type this.instance.uniqueId.equals(instance)
+                return@type this.instance.uniqueId == instance.uniqueId
             }
         }
 
