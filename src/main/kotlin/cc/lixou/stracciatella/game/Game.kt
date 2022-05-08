@@ -27,13 +27,13 @@ abstract class Game {
     }
 
     /**
-     * @param players the players that should join
+     * @param newPlayers the players that should join
      * @return false if game is full, then creates new instance
      */
-    abstract fun canJoin(players: Array<Player>): Boolean
+    abstract fun canJoin(newPlayers: Array<Player>): Boolean
 
-    abstract fun onJoin(player: Player)
-    abstract fun onLeave(player: Player)
+    abstract fun onJoin(joiningPlayer: Player)
+    abstract fun onLeave(leavingPlayer: Player)
 
     fun addPlayers(players: Array<Player>) {
         this.players.addAll(players)
