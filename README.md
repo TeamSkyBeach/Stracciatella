@@ -15,11 +15,14 @@
 * Custom Item System
 * Inventory Styles
 * Yaml Configs
+* Game Managment System
 
 #### ToDo's:
 
 * .iced World Format
 * NPC System
+* Lag Back System (e.g. Trapdoors)
+* Server Config File
 
 ## Contributions
 
