@@ -10,10 +10,11 @@ import java.util.*
 
 abstract class Game {
 
-    protected val players = ArrayList<Player>()
-    protected lateinit var instance: Instance
-    protected val uuid: UUID = UUID.randomUUID()
-    protected val eventNode =
+    val players = ArrayList<Player>()
+    lateinit var instance: Instance
+        protected set
+    val uuid: UUID = UUID.randomUUID()
+    val eventNode =
         EventNode.type("${this.javaClass.simpleName}-${uuid}", EventFilter.INSTANCE) { event, instance ->
             if (event is PlayerEvent) {
                 return@type players.contains(event.player)
@@ -25,6 +26,8 @@ abstract class Game {
     init {
         Manager.globalEvent.addChild(eventNode)
     }
+
+    protected fun <T : Enum<*>> initGameState(defaultState: T) = GameState(this, defaultState)
 
     /**
      * @param newPlayers the players that should join
