@@ -45,4 +45,10 @@ abstract class Game {
         onLeave(player)
     }
 
+    override fun equals(other: Any?): Boolean {
+        return if (other is Game) {
+            this.uuid == other.uuid
+        } else return super.equals(other)
+    }
+
 }
