@@ -8,7 +8,9 @@
 
 [ ![license-shield] ][license-link] ![build-shield]
 
-[Minestom](https://github.com/Minestom/Minestom) based Server Software for Team SkyBeach
+[Minestom](https://github.com/Minestom/Minestom) based Server Software for Team SkyBeach.
+
+Utilities Collection for making coding, playing and managing Games simple.
 
 ## Content
 
