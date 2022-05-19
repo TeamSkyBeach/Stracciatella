@@ -1,6 +1,6 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.21'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.20'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.6.21'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'application'
 }
@@ -14,11 +14,12 @@ repositories {
 }
 
 dependencies {
-    api 'com.github.Minestom:Minestom:ef53559349'
+    api 'com.github.Minestom:Minestom:83ff0daff7'
 
-    api 'com.github.TeamSkyBeach:KStom:86d37c4edb'
+    api 'com.github.TeamSkyBeach:KStom:fbf5e044d9'
 
-    implementation "com.charleskorn.kaml:kaml:0.43.0" // Get the latest version number from https://github.com/charleskorn/kaml/releases/latest
+    implementation 'com.charleskorn.kaml:kaml:0.44.0'
+    // Get the latest version number from https://github.com/charleskorn/kaml/releases/latest
 
     api "net.kyori:adventure-text-minimessage:4.10.1"
 
