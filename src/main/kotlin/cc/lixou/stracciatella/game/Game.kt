@@ -27,8 +27,6 @@ abstract class Game {
         Manager.globalEvent.addChild(eventNode)
     }
 
-    protected fun <T : Enum<*>> initGameState(defaultState: T) = GameState(this, defaultState)
-
     /**
      * @param newPlayers the players that should join
      * @return false if game is full, then creates new instance
