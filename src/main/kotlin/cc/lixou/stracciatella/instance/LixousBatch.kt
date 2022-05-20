@@ -67,9 +67,9 @@ class LixousBatch(
         for (x in 0 until sizeX) {
             for (y in 0 until sizeY) {
                 for (z in 0 until sizeZ) {
-                    val originalPos = pos.add(x.toDouble(), y.toDouble(), z.toDouble())
-                    val blockPos = rotate(originalPos, sizeX, sizeZ, rotation)
-                    instance.setBlock(blockPos, get(x, y, z))
+                    val iterationPos = Vec(x.toDouble(), y.toDouble(), z.toDouble())
+                    val blockPos = rotate(iterationPos, sizeX, sizeZ, rotation)
+                    instance.setBlock(blockPos.add(pos), get(x, y, z))
                 }
             }
         }
