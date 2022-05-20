@@ -6,14 +6,14 @@ import net.minestom.server.event.player.PlayerSwapItemEvent
 import net.minestom.server.event.player.PlayerUseItemEvent
 import net.minestom.server.item.ItemHideFlag
 import net.minestom.server.item.Material
-import world.cepi.kstom.adventure.formatMini
+import world.cepi.kstom.adventure.asMini
 
 object PlaceholderItem : CustomItem(
     "stracciatella:placeholder",
     Material.BEDROCK,
     {
         it.meta { meta ->
-            meta.displayName("".formatMini())
+            meta.displayName("".asMini())
             meta.hideFlag(
                 ItemHideFlag.HIDE_ATTRIBUTES,
                 ItemHideFlag.HIDE_DYE,
@@ -35,5 +35,4 @@ object PlaceholderItem : CustomItem(
             event.isCancelled = true
         }
     }
-) {
-}
+)

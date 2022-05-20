@@ -8,18 +8,23 @@
 
 [ ![license-shield] ][license-link] ![build-shield]
 
-[Minestom](https://github.com/Minestom/Minestom) based Server Software for Team SkyBeach
+[Minestom](https://github.com/Minestom/Minestom) based Server Software for Team SkyBeach.
+
+Utilities Collection for making coding, playing and managing Games simple.
 
 ## Content
 
 * Custom Item System
 * Inventory Styles
 * Yaml Configs
+* Game Managment System
 
 #### ToDo's:
 
 * .iced World Format
 * NPC System
+* Lag Back System (e.g. Trapdoors)
+* Server Config File
 
 ## Contributions
 

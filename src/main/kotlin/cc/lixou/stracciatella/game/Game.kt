@@ -10,15 +10,16 @@ import java.util.*
 
 abstract class Game {
 
-    protected val players = ArrayList<Player>()
-    protected lateinit var instance: Instance
-    protected val uuid: UUID = UUID.randomUUID()
-    protected val eventNode =
+    val players = ArrayList<Player>()
+    lateinit var instance: Instance
+        protected set
+    val uuid: UUID = UUID.randomUUID()
+    val eventNode =
         EventNode.type("${this.javaClass.simpleName}-${uuid}", EventFilter.INSTANCE) { event, instance ->
             if (event is PlayerEvent) {
                 return@type players.contains(event.player)
             } else {
-                return@type this.instance.uniqueId.equals(instance)
+                return@type this.instance.uniqueId == instance.uniqueId
             }
         }
 
@@ -27,13 +28,13 @@ abstract class Game {
     }
 
     /**
-     * @param players the players that should join
+     * @param newPlayers the players that should join
      * @return false if game is full, then creates new instance
      */
-    abstract fun canJoin(players: Array<Player>): Boolean
+    abstract fun canJoin(newPlayers: Array<Player>): Boolean
 
-    abstract fun onJoin(player: Player)
-    abstract fun onLeave(player: Player)
+    abstract fun onJoin(joiningPlayer: Player)
+    abstract fun onLeave(leavingPlayer: Player)
 
     fun addPlayers(players: Array<Player>) {
         this.players.addAll(players)
@@ -43,6 +44,12 @@ abstract class Game {
     fun removePlayer(player: Player) {
         this.players.remove(player)
         onLeave(player)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is Game) {
+            this.uuid == other.uuid
+        } else return super.equals(other)
     }
 
 }

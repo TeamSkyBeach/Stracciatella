@@ -41,4 +41,8 @@ object GameManager {
         games[clazz] = ArrayList()
     }
 
+    fun Player.playingGame(): Game? = getPlayingGame(this)
+
+    fun getPlayingGame(player: Player): Game? = playerGame[player]
+
 }
