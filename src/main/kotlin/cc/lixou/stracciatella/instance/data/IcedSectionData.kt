@@ -164,8 +164,8 @@ class IcedSectionData(
         //dos.write(skyLight)
     }
 
-    fun paste(instance: Instance, pos: Point) {
-        blocks.paste(instance, pos)
+    fun paste(instance: Instance, pos: Point, rotation: Byte = 0) {
+        blocks.paste(instance, pos, rotation)
     }
 
 }

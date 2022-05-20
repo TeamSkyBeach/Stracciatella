@@ -43,7 +43,11 @@ class IcedChunkData(
 
     fun paste(instance: Instance, chunkX: Int, chunkZ: Int) {
         sectionData.forEachIndexed { index, icedSectionData ->
-            icedSectionData.paste(instance, Pos(chunkX.toDouble() * 16, index.toDouble() * 16, chunkZ.toDouble() * 16))
+            icedSectionData.paste(
+                instance,
+                Pos(chunkX.toDouble() * 16, index.toDouble() * 16, chunkZ.toDouble() * 16),
+                1
+            )
         }
     }
 

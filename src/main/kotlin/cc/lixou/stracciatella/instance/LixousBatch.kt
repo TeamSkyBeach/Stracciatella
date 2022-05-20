@@ -58,15 +58,23 @@ class LixousBatch(
 
     fun index(x: Int, y: Int, z: Int): Int = x * sizeX * sizeX + y * sizeY + z
 
-    fun paste(instance: Instance, pos: Point) {
+    /**
+     * Pastes the batch at
+     * @param pos       the location
+     * @param rotation  how hard it should be rotated on the y axis. 0 = normal, 1 = 90° clockwise, 2 = 180° clockwise...
+     */
+    fun paste(instance: Instance, pos: Point, rotation: Byte = 0) {
         for (x in 0 until sizeX) {
             for (y in 0 until sizeY) {
                 for (z in 0 until sizeZ) {
-                    val blockPos = pos.add(x.toDouble(), y.toDouble(), z.toDouble())
+                    val originalPos = pos.add(x.toDouble(), y.toDouble(), z.toDouble())
+                    val blockPos = if (rotation == 0.toByte()) originalPos else rotate(originalPos, sizeZ)
                     instance.setBlock(blockPos, get(x, y, z))
                 }
             }
         }
     }
+
+    private fun rotate(pos: Point, size: Int) = Vec(size - 1 - pos.z(), pos.y(), pos.x())
 
 }
