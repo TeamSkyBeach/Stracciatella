@@ -68,13 +68,25 @@ class LixousBatch(
             for (y in 0 until sizeY) {
                 for (z in 0 until sizeZ) {
                     val originalPos = pos.add(x.toDouble(), y.toDouble(), z.toDouble())
-                    val blockPos = if (rotation == 0.toByte()) originalPos else rotate(originalPos, sizeZ)
+                    val blockPos = rotate(originalPos, sizeX, sizeZ, rotation)
                     instance.setBlock(blockPos, get(x, y, z))
                 }
             }
         }
     }
 
-    private fun rotate(pos: Point, size: Int) = Vec(size - 1 - pos.z(), pos.y(), pos.x())
+    private fun rotate(pos: Point, sizeX: Int, sizeZ: Int, amount: Byte): Vec {
+        val mod = amount % 4
+        var result = Vec.fromPoint(pos)
+        if (mod == 0) return result
+        var remaining = mod
+        while (remaining > 0) {
+            result = rotate(result, if (remaining % 2 == 0) sizeX else sizeZ)
+            remaining--
+        }
+        return result
+    }
+
+    private fun rotate(vec: Vec, size: Int) = Vec(size - 1 - vec.z(), vec.y(), vec.x())
 
 }

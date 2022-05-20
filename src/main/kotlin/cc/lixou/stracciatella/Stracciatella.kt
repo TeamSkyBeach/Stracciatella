@@ -10,11 +10,11 @@ import net.minestom.server.event.player.PlayerChatEvent
 import net.minestom.server.event.player.PlayerDisconnectEvent
 import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.instance.block.Block
+import org.slf4j.LoggerFactory
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import org.slf4j.LoggerFactory
 import java.nio.file.Path
 
 class Stracciatella {
@@ -56,7 +56,7 @@ class Stracciatella {
             val chunk = instanceContainer.getChunkAt(it.player.position)
             if (it.message.lowercase() == "load") {
                 IcedChunkData.load(DataInputStream(FileInputStream("mycoolchunk.iced"))).paste(
-                    it.player.instance!!, chunk!!.chunkX, chunk.chunkZ
+                    it.player.instance!!, chunk!!.chunkX, chunk.chunkZ, 1
                 )
             } else if (it.message.lowercase() == "save") {
                 IcedChunkData.fromChunk(chunk!!).save(DataOutputStream(FileOutputStream("mycoolchunk.iced")))
