@@ -1,6 +1,8 @@
 package cc.lixou.stracciatella.instance.data
 
+import cc.lixou.stracciatella.instance.util.PasteModifier
 import net.minestom.server.instance.Chunk
+import net.minestom.server.instance.Instance
 import java.io.DataInputStream
 import java.io.DataOutputStream
 
@@ -46,6 +48,14 @@ class IcedObjectData(
         for (x in 0 until sizeX.toInt()) {
             for (z in 0 until sizeZ.toInt()) {
                 chunkData[Pair(x.toShort(), z.toShort())]?.save(dos)
+            }
+        }
+    }
+
+    fun paste(instance: Instance, chunkX: Int, chunkZ: Int, modifier: PasteModifier = PasteModifier()) {
+        for (x in 0 until sizeX.toInt()) {
+            for (z in 0 until sizeZ.toInt()) {
+                chunkData[Pair(x.toShort(), z.toShort())]?.paste(instance, x + chunkX, z + chunkZ, modifier)
             }
         }
     }

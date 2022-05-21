@@ -2,7 +2,7 @@ package cc.lixou.stracciatella
 
 import cc.lixou.stracciatella.config.Config
 import cc.lixou.stracciatella.game.GameManager
-import cc.lixou.stracciatella.instance.data.IcedChunkData
+import cc.lixou.stracciatella.instance.data.IcedObjectData
 import cc.lixou.stracciatella.instance.util.PasteModifier
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
@@ -55,12 +55,18 @@ class Stracciatella {
         }
         eventHandler.addListener(PlayerChatEvent::class.java) {
             val chunk = instanceContainer.getChunkAt(it.player.position)
+            val secondChunk = instanceContainer.getChunkAt(it.player.position.add(0.0, 0.0, 16.0))
             if (it.message.lowercase() == "load") {
-                IcedChunkData.load(DataInputStream(FileInputStream("mycoolchunk.iced"))).paste(
-                    it.player.instance!!, chunk!!.chunkX, chunk.chunkZ, PasteModifier(3, 2)
+                IcedObjectData.load(DataInputStream(FileInputStream("mycoolobject.iced"))).paste(
+                    it.player.instance!!, chunk!!.chunkX, chunk.chunkZ, PasteModifier(2)
                 )
+                /*IcedChunkData.load(DataInputStream(FileInputStream("mycoolchunk.iced"))).paste(
+                    it.player.instance!!, chunk!!.chunkX, chunk.chunkZ, PasteModifier(3, 2)
+                )*/
             } else if (it.message.lowercase() == "save") {
-                IcedChunkData.fromChunk(chunk!!).save(DataOutputStream(FileOutputStream("mycoolchunk.iced")))
+                IcedObjectData.fromChunks(listOf(chunk!!, secondChunk!!))
+                    .save(DataOutputStream(FileOutputStream("mycoolobject.iced")))
+                //IcedChunkData.fromChunk(chunk!!).save(DataOutputStream(FileOutputStream("mycoolobject.iced")))
             } else if (it.message.lowercase() == "creative") {
                 it.player.gameMode = GameMode.CREATIVE
             } else if (it.message.lowercase() == "spec") {
