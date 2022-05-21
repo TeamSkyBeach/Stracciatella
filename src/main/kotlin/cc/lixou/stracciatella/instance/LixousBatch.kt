@@ -62,17 +62,40 @@ class LixousBatch(
     /**
      * Pastes the batch at
      * @param pos       the location
-     * @param rotation  how hard it should be rotated on the y axis. 0 = normal, 1 = 90° clockwise, 2 = 180° clockwise...
+     * @param modifier  the modifier that should be applied when pasting
      */
     fun paste(instance: Instance, pos: Point, modifier: PasteModifier = PasteModifier()) {
         for (x in 0 until sizeX) {
             for (y in 0 until sizeY) {
                 for (z in 0 until sizeZ) {
                     val iterationPos = Vec(x.toDouble(), y.toDouble(), z.toDouble())
-                    val blockPos = rotate(iterationPos, sizeX, sizeZ, modifier.rotationY)
+                    var blockPos = rotate(iterationPos, sizeX, sizeZ, modifier.rotationY)
+                    blockPos = flip(blockPos, sizeX, sizeZ, modifier.flip)
                     instance.setBlock(blockPos.add(pos), get(x, y, z))
                 }
             }
+        }
+    }
+
+    private fun flip(pos: Vec, sizeX: Int, sizeZ: Int, mode: Byte): Vec {
+        if (mode == 0.toByte()) return pos
+        return if (mode == 1.toByte()) {
+            // flip X
+            pos.withX(flip(pos.x.toInt(), sizeX).toDouble() - 1.0)
+        } else {
+            // flip Z
+            pos.withZ(flip(pos.z.toInt(), sizeZ).toDouble() - 1.0)
+        }
+    }
+
+    private fun flip(point: Int, size: Int): Int {
+        val half = size / 2
+        return if (point > half) {
+            val dif = point - half
+            half - dif
+        } else {
+            val dif = half - point
+            half + dif
         }
     }
 
@@ -82,12 +105,12 @@ class LixousBatch(
         if (mod == 0) return result
         var remaining = mod
         while (remaining > 0) {
-            result = rotate(result, if (remaining % 2 == 0) sizeX else sizeZ)
+            result = rotateOnce(result, if (remaining % 2 == 0) sizeX else sizeZ)
             remaining--
         }
         return result
     }
 
-    private fun rotate(vec: Vec, size: Int) = Vec(size - 1 - vec.z(), vec.y(), vec.x())
+    private fun rotateOnce(vec: Vec, size: Int) = Vec(size - 1 - vec.z(), vec.y(), vec.x())
 
 }
