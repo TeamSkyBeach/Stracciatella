@@ -2,6 +2,7 @@ package cc.lixou.stracciatella.instance.data
 
 import cc.lixou.stracciatella.instance.LixousBatch
 import cc.lixou.stracciatella.instance.util.NBTUtils
+import cc.lixou.stracciatella.instance.util.PasteModifier
 import net.minestom.server.coordinate.Point
 import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.Instance
@@ -164,8 +165,8 @@ class IcedSectionData(
         //dos.write(skyLight)
     }
 
-    fun paste(instance: Instance, pos: Point, rotation: Byte = 0) {
-        blocks.paste(instance, pos, rotation)
+    fun paste(instance: Instance, pos: Point, modifier: PasteModifier = PasteModifier()) {
+        blocks.paste(instance, pos, modifier)
     }
 
 }

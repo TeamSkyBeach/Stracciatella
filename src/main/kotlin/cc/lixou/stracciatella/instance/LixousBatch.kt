@@ -1,5 +1,6 @@
 package cc.lixou.stracciatella.instance
 
+import cc.lixou.stracciatella.instance.util.PasteModifier
 import net.minestom.server.coordinate.Point
 import net.minestom.server.coordinate.Vec
 import net.minestom.server.instance.Instance
@@ -63,12 +64,12 @@ class LixousBatch(
      * @param pos       the location
      * @param rotation  how hard it should be rotated on the y axis. 0 = normal, 1 = 90° clockwise, 2 = 180° clockwise...
      */
-    fun paste(instance: Instance, pos: Point, rotation: Byte = 0) {
+    fun paste(instance: Instance, pos: Point, modifier: PasteModifier = PasteModifier()) {
         for (x in 0 until sizeX) {
             for (y in 0 until sizeY) {
                 for (z in 0 until sizeZ) {
                     val iterationPos = Vec(x.toDouble(), y.toDouble(), z.toDouble())
-                    val blockPos = rotate(iterationPos, sizeX, sizeZ, rotation)
+                    val blockPos = rotate(iterationPos, sizeX, sizeZ, modifier.rotationY)
                     instance.setBlock(blockPos.add(pos), get(x, y, z))
                 }
             }

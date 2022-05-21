@@ -1,5 +1,6 @@
 package cc.lixou.stracciatella.instance.data
 
+import cc.lixou.stracciatella.instance.util.PasteModifier
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.Instance
@@ -41,12 +42,12 @@ class IcedChunkData(
         }
     }
 
-    fun paste(instance: Instance, chunkX: Int, chunkZ: Int, rotation: Byte = 0) {
+    fun paste(instance: Instance, chunkX: Int, chunkZ: Int, modifier: PasteModifier = PasteModifier()) {
         sectionData.forEachIndexed { index, icedSectionData ->
             icedSectionData.paste(
                 instance,
                 Pos(chunkX.toDouble() * 16, index.toDouble() * 16, chunkZ.toDouble() * 16),
-                rotation
+                modifier
             )
         }
     }

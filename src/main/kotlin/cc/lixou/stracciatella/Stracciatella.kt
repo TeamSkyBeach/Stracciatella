@@ -3,6 +3,7 @@ package cc.lixou.stracciatella
 import cc.lixou.stracciatella.config.Config
 import cc.lixou.stracciatella.game.GameManager
 import cc.lixou.stracciatella.instance.data.IcedChunkData
+import cc.lixou.stracciatella.instance.util.PasteModifier
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.entity.GameMode
@@ -56,7 +57,7 @@ class Stracciatella {
             val chunk = instanceContainer.getChunkAt(it.player.position)
             if (it.message.lowercase() == "load") {
                 IcedChunkData.load(DataInputStream(FileInputStream("mycoolchunk.iced"))).paste(
-                    it.player.instance!!, chunk!!.chunkX, chunk.chunkZ, 12
+                    it.player.instance!!, chunk!!.chunkX, chunk.chunkZ, PasteModifier(rotationY = 2)
                 )
             } else if (it.message.lowercase() == "save") {
                 IcedChunkData.fromChunk(chunk!!).save(DataOutputStream(FileOutputStream("mycoolchunk.iced")))
