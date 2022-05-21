@@ -55,9 +55,52 @@ class IcedObjectData(
     fun paste(instance: Instance, chunkX: Int, chunkZ: Int, modifier: PasteModifier = PasteModifier()) {
         for (x in 0 until sizeX.toInt()) {
             for (z in 0 until sizeZ.toInt()) {
-                chunkData[Pair(x.toShort(), z.toShort())]?.paste(instance, x + chunkX, z + chunkZ, modifier)
+                var pos = rotate(x, z, sizeX, sizeZ, modifier.rotationY)
+                pos = flip(pos, sizeX, sizeZ, modifier.flip)
+                chunkData[Pair(x.toShort(), z.toShort())]?.paste(
+                    instance,
+                    pos.first + chunkX,
+                    pos.second + chunkZ,
+                    modifier
+                )
             }
         }
     }
+
+    private fun flip(pos: Pair<Short, Short>, sizeX: UShort, sizeZ: UShort, mode: Byte): Pair<Short, Short> {
+        if (mode == 0.toByte()) return pos
+        return if (mode == 1.toByte()) {
+            // flip X
+            Pair((flip(pos.first.toInt(), sizeX.toInt()) - 1).toShort(), pos.second)
+        } else {
+            // flip Z
+            Pair(pos.first, (flip(pos.second.toInt(), sizeZ.toInt()) - 1).toShort())
+        }
+    }
+
+    private fun flip(point: Int, size: Int): Int {
+        val half = size / 2
+        return if (point > half) {
+            val dif = point - half
+            half - dif
+        } else {
+            val dif = half - point
+            half + dif
+        }
+    }
+
+    private fun rotate(x: Int, z: Int, sizeX: UShort, sizeZ: UShort, amount: Byte): Pair<Short, Short> {
+        val mod = amount % 4
+        var result = Pair(x.toShort(), z.toShort())
+        if (mod == 0) return result
+        var remaining = mod
+        while (remaining > 0) {
+            result = rotateOnce(result, if (remaining % 2 == 0) sizeX.toInt() else sizeZ.toInt())
+            remaining--
+        }
+        return result
+    }
+
+    private fun rotateOnce(pos: Pair<Short, Short>, size: Int) = Pair((size - 1 - pos.second).toShort(), pos.first)
 
 }
