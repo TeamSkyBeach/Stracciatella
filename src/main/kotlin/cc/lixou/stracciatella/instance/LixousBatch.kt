@@ -3,6 +3,7 @@ package cc.lixou.stracciatella.instance
 import cc.lixou.stracciatella.instance.util.PasteModifier
 import net.minestom.server.coordinate.Point
 import net.minestom.server.coordinate.Vec
+import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
 import net.minestom.server.instance.block.BlockHandler
@@ -65,16 +66,22 @@ class LixousBatch(
      * @param modifier  the modifier that should be applied when pasting
      */
     fun paste(instance: Instance, pos: Point, modifier: PasteModifier = PasteModifier()) {
+        val modifiedChunks = mutableListOf<Chunk>()
         for (x in 0 until sizeX) {
             for (y in 0 until sizeY) {
                 for (z in 0 until sizeZ) {
                     val iterationPos = Vec(x.toDouble(), y.toDouble(), z.toDouble())
                     var blockPos = rotate(iterationPos, sizeX, sizeZ, modifier.rotationY)
                     blockPos = flip(blockPos, sizeX, sizeZ, modifier.flip)
-                    instance.setBlock(blockPos.add(pos), get(x, y, z))
+                    val instancePos = blockPos.add(pos)
+                    val chunk = instance.getChunkAt(instancePos)!!
+                    if (!modifiedChunks.contains(chunk)) modifiedChunks.add(chunk)
+                    val chunkPos = Vec(instancePos.x % 16, instancePos.y, instancePos.z % 16)
+                    chunk.setBlock(chunkPos, get(x, y, z)) // FIXME: Light is not working correctly
                 }
             }
         }
+        modifiedChunks.forEach { it.sendChunk() }
     }
 
     private fun flip(pos: Vec, sizeX: Int, sizeZ: Int, mode: Byte): Vec {
