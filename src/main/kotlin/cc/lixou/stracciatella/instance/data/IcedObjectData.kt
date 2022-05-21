@@ -1,15 +1,19 @@
 package cc.lixou.stracciatella.instance.data
 
+import cc.lixou.stracciatella.instance.util.NBTUtils
 import cc.lixou.stracciatella.instance.util.PasteModifier
 import net.minestom.server.instance.Chunk
 import net.minestom.server.instance.Instance
+import org.jglrxavpok.hephaistos.nbt.NBT
+import org.jglrxavpok.hephaistos.nbt.NBTCompound
 import java.io.DataInputStream
 import java.io.DataOutputStream
 
 class IcedObjectData(
-    val sizeX: UShort,
-    val sizeZ: UShort,
-    val chunkData: Map<Pair<Short, Short>, IcedChunkData>
+    private val sizeX: UShort,
+    private val sizeZ: UShort,
+    private val chunkData: Map<Pair<Short, Short>, IcedChunkData>,
+    val additionalData: NBTCompound = NBT.Compound()
 ) {
 
     companion object {
@@ -25,7 +29,13 @@ class IcedObjectData(
                 }
             }
 
-            return IcedObjectData(sizeX, sizeZ, chunkData)
+            val additionalDataSize = dis.readInt()
+            val additionalData = if (additionalDataSize == 0) NBTCompound() else {
+                val additionalDataBytes = dis.readNBytes(additionalDataSize)
+                NBTUtils.readNBTTag<NBTCompound>(additionalDataBytes)
+            }
+
+            return IcedObjectData(sizeX, sizeZ, chunkData, additionalData)
         }
 
         fun fromChunks(chunks: List<Chunk>): IcedObjectData {
@@ -49,6 +59,14 @@ class IcedObjectData(
             for (z in 0 until sizeZ.toInt()) {
                 chunkData[Pair(x.toShort(), z.toShort())]?.save(dos)
             }
+        }
+
+        if (additionalData.isEmpty()) {
+            dos.writeInt(0)
+        } else {
+            val additionalDataBytes = NBTUtils.writeNBTTag(additionalData)
+            dos.writeInt(additionalDataBytes.size)
+            dos.write(additionalDataBytes)
         }
     }
 
