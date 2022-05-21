@@ -38,7 +38,7 @@ class IcedSectionData(
             for (i in 0 until paletteLength) {
                 val nbtLength = dis.readInt()
                 val nbtRaw = dis.readNBytes(nbtLength)
-                val nbtCompound = NBTUtils.readNBTTag<NBTCompound>(nbtRaw)
+                val nbtCompound = NBTUtils.readShortBlockState(nbtRaw)
                 paletteList.add(nbtCompound)
             }
 
@@ -136,7 +136,7 @@ class IcedSectionData(
         // Palette Data
         dos.writeInt(blocks.palette.elements.size)
         blocks.palette.elements.forEach {
-            val serialized = NBTUtils.writeNBTTag(it.toNBT())
+            val serialized = NBTUtils.writeShortBlockState(it)
             dos.writeInt(serialized.size)
             dos.write(serialized)
         }

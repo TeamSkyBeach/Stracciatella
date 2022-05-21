@@ -57,7 +57,7 @@ class Stracciatella {
             val chunk = instanceContainer.getChunkAt(it.player.position)
             if (it.message.lowercase() == "load") {
                 IcedChunkData.load(DataInputStream(FileInputStream("mycoolchunk.iced"))).paste(
-                    it.player.instance!!, chunk!!.chunkX, chunk.chunkZ, PasteModifier(flip = 2)
+                    it.player.instance!!, chunk!!.chunkX, chunk.chunkZ, PasteModifier(3, 2)
                 )
             } else if (it.message.lowercase() == "save") {
                 IcedChunkData.fromChunk(chunk!!).save(DataOutputStream(FileOutputStream("mycoolchunk.iced")))

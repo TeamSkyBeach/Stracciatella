@@ -1,6 +1,7 @@
 package cc.lixou.stracciatella.instance.util
 
 import net.minestom.server.instance.block.Block
+import org.jglrxavpok.hephaistos.mca.BlockState
 import org.jglrxavpok.hephaistos.nbt.*
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -14,8 +15,28 @@ object NBTUtils {
     inline fun <reified T : NBT> readNBTTag(bytes: ByteArray): T =
         NBTReader(ByteArrayInputStream(bytes), CompressedProcesser.NONE).read() as T
 
+    fun readShortBlockState(bytes: ByteArray): NBTCompound = NBT.Kompound {
+        val input = NBTReader(ByteArrayInputStream(bytes), CompressedProcesser.NONE).readNamed()
+        this["Name"] = NBT.String(input.first)
+        this["Properties"] = input.second
+    }
+
     inline fun <reified T : NBT> writeNBTTag(tag: T): ByteArray =
         ByteArrayOutputStream().also { NBTWriter(it, CompressedProcesser.NONE).writeNamed("", tag) }.toByteArray()
+
+    fun writeShortBlockState(blockState: BlockState): ByteArray =
+        ByteArrayOutputStream().also {
+            NBTWriter(it, CompressedProcesser.NONE).writeNamed(
+                blockState.name,
+                blockState.toPropertiesNBT()
+            )
+        }.toByteArray()
+
+    fun BlockState.toPropertiesNBT() = NBT.Kompound {
+        for ((name, value) in properties) {
+            this[name] = NBT.String(value)
+        }
+    }
 
     fun getBlockFromCompound(compound: NBTCompound): Block? {
         val name = compound.getString("Name") ?: return null
