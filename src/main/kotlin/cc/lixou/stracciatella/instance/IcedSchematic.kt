@@ -3,9 +3,10 @@ package cc.lixou.stracciatella.instance
 import cc.lixou.stracciatella.instance.data.IcedObjectData
 import java.io.*
 
-object IcedData {
+object IcedSchematic {
 
-    fun fromFile(file: File): Map<String, IcedObjectData> = fromInputStream(FileInputStream(file))
+    fun fromFile(file: File): Map<String, IcedObjectData> =
+        FileInputStream(file).let { val value = fromInputStream(it); it.close(); value }
 
     fun fromInputStream(inputStream: InputStream): Map<String, IcedObjectData> {
         val reader = DataInputStream(inputStream)
@@ -19,15 +20,20 @@ object IcedData {
             objects[name] = objectData
         }
 
+        println(objectAmount)
+
         reader.close()
 
         return objects
     }
 
-    fun toFile(file: File, objectData: Map<String, IcedObjectData>) = toOututStream(FileOutputStream(file), objectData)
+    fun toFile(file: File, objectData: Map<String, IcedObjectData>) =
+        FileOutputStream(file).also { toOututStream(it, objectData); it.flush(); it.close() }
 
     fun toOututStream(outptStream: OutputStream, objectData: Map<String, IcedObjectData>) {
         val writer = DataOutputStream(outptStream)
+
+        writer.writeByte(objectData.size)
 
         for (dataObject in objectData) {
             writer.writeUTF(dataObject.key)

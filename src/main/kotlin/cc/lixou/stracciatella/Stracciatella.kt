@@ -2,6 +2,7 @@ package cc.lixou.stracciatella
 
 import cc.lixou.stracciatella.config.Config
 import cc.lixou.stracciatella.game.GameManager
+import cc.lixou.stracciatella.instance.IcedSchematic
 import cc.lixou.stracciatella.instance.data.IcedObjectData
 import cc.lixou.stracciatella.instance.util.PasteModifier
 import net.minestom.server.MinecraftServer
@@ -12,10 +13,7 @@ import net.minestom.server.event.player.PlayerDisconnectEvent
 import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.instance.block.Block
 import org.slf4j.LoggerFactory
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.FileInputStream
-import java.io.FileOutputStream
+import java.io.File
 import java.nio.file.Path
 
 class Stracciatella {
@@ -57,15 +55,14 @@ class Stracciatella {
             val chunk = instanceContainer.getChunkAt(it.player.position)
             val secondChunk = instanceContainer.getChunkAt(it.player.position.add(0.0, 0.0, 16.0))
             if (it.message.lowercase() == "load") {
-                IcedObjectData.load(DataInputStream(FileInputStream("mycoolobject.iced"))).paste(
-                    it.player.instance!!, chunk!!.chunkX, chunk.chunkZ, PasteModifier(flip = 0)
-                )
+                val obj = IcedSchematic.fromFile(File("mycoolobject.iced"))["lol1"]!!
+                obj.paste(it.player.instance!!, chunk!!.chunkX, chunk.chunkZ, PasteModifier(flip = 0))
                 /*IcedChunkData.load(DataInputStream(FileInputStream("mycoolchunk.iced"))).paste(
                     it.player.instance!!, chunk!!.chunkX, chunk.chunkZ, PasteModifier(3, 2)
                 )*/
             } else if (it.message.lowercase() == "save") {
-                IcedObjectData.fromChunks(listOf(chunk!!, secondChunk!!))
-                    .save(DataOutputStream(FileOutputStream("mycoolobject.iced")))
+                val obj = IcedObjectData.fromChunks(listOf(chunk!!, secondChunk!!))
+                IcedSchematic.toFile(File("mycoolobject.iced"), mapOf(Pair("lol1", obj)))
                 //IcedChunkData.fromChunk(chunk!!).save(DataOutputStream(FileOutputStream("mycoolobject.iced")))
             } else if (it.message.lowercase() == "creative") {
                 it.player.gameMode = GameMode.CREATIVE
