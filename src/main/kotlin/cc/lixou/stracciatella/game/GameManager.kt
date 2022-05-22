@@ -11,7 +11,7 @@ object GameManager {
     private val games: ConcurrentHashMap<KClass<out Game>, ArrayList<Game>> = ConcurrentHashMap()
 
     fun unregisterPlayer(player: Player) {
-        playerGame[player]?.removePlayer(player)
+        leaveGame(player)
         playerGame.remove(player)
     }
 
