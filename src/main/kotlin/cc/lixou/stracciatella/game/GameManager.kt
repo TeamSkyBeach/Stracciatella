@@ -11,7 +11,7 @@ object GameManager {
     private val games: ConcurrentHashMap<KClass<out Game>, ArrayList<Game>> = ConcurrentHashMap()
 
     fun unregisterPlayer(player: Player) {
-        playerGame[player]?.removePlayer(player)
+        leaveGame(player)
         playerGame.remove(player)
     }
 
@@ -21,10 +21,24 @@ object GameManager {
         val game: Game = games[clazz]?.find { it.canJoin(players) }
             ?: createGame(clazz)
         players.forEach {
-            playerGame[it]?.removePlayer(it)
+            leaveGame(it)
             playerGame[it] = game
         }
         game.addPlayers(players)
+    }
+
+    /**
+     * @return boolean if player was in a game before
+     */
+    fun leaveGame(player: Player): Boolean {
+        val game = player.playingGame() ?: return false
+        playerGame.remove(player)
+        game.removePlayer(player)
+        if (game.shouldClose()) {
+            game.onClose()
+            games[game::class]!!.remove(game)
+        }
+        return true
     }
 
     private fun <T : Game> createGame(clazz: KClass<out T>): Game {
@@ -40,5 +54,9 @@ object GameManager {
         if (games.containsKey(clazz)) return
         games[clazz] = ArrayList()
     }
+
+    fun Player.playingGame(): Game? = getPlayingGame(this)
+
+    fun getPlayingGame(player: Player): Game? = playerGame[player]
 
 }
