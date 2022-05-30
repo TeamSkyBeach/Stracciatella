@@ -56,7 +56,7 @@ class Stracciatella {
             val secondChunk = instanceContainer.getChunkAt(it.player.position.add(0.0, 0.0, 16.0))
             if (it.message.lowercase() == "load") {
                 val obj = IcedSchematic.fromFile(File("mycoolobject.iced"))["lol1"]!!
-                obj.paste(it.player.instance!!, chunk!!.chunkX, chunk.chunkZ, PasteModifier(flip = 0))
+                obj.paste(it.player.instance!!, chunk!!.chunkX, chunk.chunkZ, PasteModifier(rotationY = 3))
                 /*IcedChunkData.load(DataInputStream(FileInputStream("mycoolchunk.iced"))).paste(
                     it.player.instance!!, chunk!!.chunkX, chunk.chunkZ, PasteModifier(3, 2)
                 )*/
