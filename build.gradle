@@ -21,7 +21,7 @@ dependencies {
     implementation 'com.charleskorn.kaml:kaml:0.44.0'
     // Get the latest version number from https://github.com/charleskorn/kaml/releases/latest
 
-    api "net.kyori:adventure-text-minimessage:4.10.1"
+    api "net.kyori:adventure-text-minimessage:4.11.0"
 
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
 }
