@@ -36,6 +36,14 @@ abstract class Game {
     abstract fun onJoin(joiningPlayer: Player)
     abstract fun onLeave(leavingPlayer: Player)
 
+    /**
+     * This gets called after a player is leaving.
+     * @return if true, this game will get closed
+     */
+    abstract fun shouldClose(): Boolean
+
+    abstract fun onClose()
+
     fun addPlayers(players: Array<Player>) {
         this.players.addAll(players)
         players.forEach { onJoin(it) }
