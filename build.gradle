@@ -14,11 +14,11 @@ repositories {
 }
 
 dependencies {
-    api 'com.github.Minestom:Minestom:8ce43ca40c'
+    api 'com.github.Minestom:Minestom:d6d1b85'
 
     api 'com.github.Project-Cepi:KStom:82f7000079'
 
-    implementation 'com.charleskorn.kaml:kaml:0.44.0'
+    implementation 'com.charleskorn.kaml:kaml:0.45.0'
     // Get the latest version number from https://github.com/charleskorn/kaml/releases/latest
 
     api "net.kyori:adventure-text-minimessage:4.11.0"

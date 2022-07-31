@@ -1,6 +1,7 @@
 package cc.lixou.stracciatella.instance
 
-import cc.lixou.stracciatella.instance.util.*
+import cc.lixou.stracciatella.instance.util.PasteModifier
+import cc.lixou.stracciatella.instance.util.rotateClockwise
 import net.minestom.server.coordinate.Point
 import net.minestom.server.coordinate.Vec
 import net.minestom.server.instance.Chunk
@@ -79,13 +80,9 @@ class LixousBatch(
                     val chunkPos = Vec(instancePos.x % 16, instancePos.y, instancePos.z % 16)
 
                     var block = get(x, y, z)
-                    if (block.hasFacing()) {
-                        for (i in 0 until modifier.rotationY) {
-                            val next = block.getFacing().next()
-                            block = next.applyFacing(block)
-                        }
+                    for (i in 0 until (modifier.rotationY % 4)) {
+                        block = block.rotateClockwise()
                     }
-
 
                     chunk.setBlock(chunkPos, block) // FIXME: Light is not working correctly
                 }
